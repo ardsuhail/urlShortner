@@ -7,12 +7,12 @@ import { LoaderCircle } from 'lucide-react'
 import { motion } from "framer-motion";
 import Router from 'next/router'
 import { useRouter } from 'next/navigation'
-const page = () => {
-  const [url, setUrl] = useState("")
-  const [shortUrl, setShortUrl] = useState("")
-  const [Generated, setGenerated] = useState("")
-  const [error, setError] = useState("")
-  const [loading, setloading] = useState(false)
+const Page = () => {
+  const [url, setUrl] =useState("")
+  const [shortUrl, setShortUrl] =useState("")
+  const [Generated, setGenerated] =useState("")
+  const [error, setError] =useState("")
+  const [loading, setloading] =useState(false)
   const router = useRouter()
   const Generate = () => {
     if (!url.trim()) {
@@ -97,7 +97,7 @@ const page = () => {
           <h3 className="text-xl font-bold mb-3 text-white">How to use:</h3>
           <ul className="list-disc ml-5 space-y-2 text-sm text-gray-200">
             <li><strong>Original URL:</strong> Paste your full link here (e.g., {domain}).</li>
-            <li><strong>Short URL:</strong> Write anything you want as a custom short link. Example: "my-link".</li>
+            <li><strong>Short URL:</strong> Write anything you want as a custom short link. Example: &quot;my-link&quot;.</li>
             <li>The final short URL will look like: <span className="text-purple-300 font-medium">{domain}/your-short-url</span>.</li>
             <li>Click <strong>Generate</strong> and your link will be ready to copy and share anywhere.</li>
             <li>You can create multiple short links and they will be stored for easy access later.</li>
@@ -188,4 +188,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

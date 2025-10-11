@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-
+import Link from "next/link";
 const AboutPage = () => {
   return (
     <main className="min-h-screen bg-gradient-to-br from-white via-blue-50 to-blue-100 py-16 px-6 flex flex-col items-center">
@@ -82,13 +82,13 @@ const AboutPage = () => {
           <span className="font-semibold text-blue-600">Suhail</span>, a
           passionate B.Tech Computer Science student and tech enthusiast. My
           Instagram handle is{" "}
-          <a
+          <Link
             href="https://instagram.com/ardsuhail"
             target="_blank"
             className="text-blue-500 font-semibold hover:underline"
           >
             @ardsuhail
-          </a>
+          </Link>
           , where I share insights about technology, AI, coding, and content
           creation.
         </p>
@@ -111,13 +111,13 @@ const AboutPage = () => {
         </h2>
         <p className="text-lg text-gray-800 leading-relaxed">
           Apart from Urlixa, I also run an online store{" "}
-          <a
+          <Link
             href="https://shopovix.store"
             target="_blank"
             className="text-blue-500 font-semibold hover:underline"
           >
             Shopovix.store
-          </a>
+          </Link>
           , where I bring top-quality products at affordable prices. Innovation
           and creativity are at the core of everything I do.
         </p>
@@ -137,12 +137,12 @@ const AboutPage = () => {
           Urlixa is your go-to platform for clean, memorable, and trackable
           links. Join thousands of users making their digital sharing smarter.
         </p>
-        <a
+        <Link
           href="/shortner"
           className="inline-block bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600 text-white font-semibold px-8 py-3 rounded-full shadow-lg hover:scale-105 hover:shadow-2xl transition-all duration-300"
         >
           Start Shortening
-        </a>
+        </Link>
       </motion.section>
     </main>
   );
