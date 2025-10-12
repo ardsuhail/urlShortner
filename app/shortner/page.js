@@ -70,7 +70,7 @@ const Page = () => {
 
   return (
     <>
-      <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-950 via-purple-900 to-slate-900 p-6 relative overflow-hidden">
+      <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-950 via-purple-900 to-slate-900 p-4 sm:p-6 relative overflow-hidden">
         {/* 🔵 Animated gradient orbs for background */}
         <motion.div
           className="absolute w-96 h-96 bg-purple-500/30 rounded-full blur-3xl top-10 left-10 -z-10"
@@ -78,7 +78,7 @@ const Page = () => {
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
         />
         <motion.div
-          className="absolute w-[30rem] h-[30rem] bg-pink-500/20 rounded-full blur-3xl bottom-20 right-10 -z-10"
+          className="absolute w-[50rem]  h-[50rem] sm:w-[30rem] sm:h-[30rem] bg-pink-500/20 rounded-full blur-3xl bottom-20 right-10 -z-10"
           animate={{ y: [0, -25, 0], x: [0, -20, 0] }}
           transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
         />
@@ -88,7 +88,7 @@ const Page = () => {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6 }}
-          className="bg-white/10 backdrop-blur-xl p-8 rounded-2xl shadow-2xl w-full max-w-5xl flex flex-col md:flex-row gap-6 border border-white/20"
+          className="bg-white/10 backdrop-blur-xl p-2 sm:p-8 rounded-2xl shadow-2xl w-full max-w-5xl flex flex-col md:flex-row gap-6 border border-white/20"
         >
 
 
@@ -98,9 +98,9 @@ const Page = () => {
             initial={{ x: 30, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.6 }}
-            className="flex-1 bg-gradient-to-br from-purple-600/10 via-pink-500/10 to-yellow-400/10 backdrop-blur-md p-6 rounded-xl shadow-lg"
+            className="flex-1 bg-gradient-to-br from-purple-600/10 via-pink-500/10 to-yellow-400/10 backdrop-blur-md px-2 sm:px-6 py-6  rounded-xl shadow-lg"
           >
-            <h2 className="text-2xl font-bold text-white mb-6">
+            <h2 className="text-[19px] flex justify-center items-center sm:text-2xl w-full font-bold text-white mb-6">
               Paste the URL to be shortened
             </h2>
 
@@ -111,8 +111,8 @@ const Page = () => {
                 type="text"
                 id="url"
                 name="url"
-                placeholder="Enter Your Long URL"
-                className="w-full px-4 py-3 rounded-xl bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400 transition-all"
+                placeholder="Enter Your Long(Original) URL"
+                className="w-[100%] px-4 py-3 rounded-xl bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400 transition-all"
               />
               <label
                 htmlFor="shorturl"

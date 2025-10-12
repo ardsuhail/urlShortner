@@ -17,7 +17,7 @@ const Sidebar = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.5 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.6 }}
             className="fixed inset-0 bg-black z-40 backdrop-blur-sm"
             onClick={() => setSidebarOpen(false)}
           />
@@ -37,7 +37,7 @@ const Sidebar = () => {
               <motion.div
                 whileHover={{ rotate: 90, scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.6 }}
               >
                 <SidebarClose
                   onClick={() => setSidebarOpen(false)}
