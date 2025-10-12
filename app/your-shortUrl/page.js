@@ -21,6 +21,7 @@ const Page = () => {
       setTimeout(() => setCopied(false), 2000)
     }
   }
+  const domain=process.env.NEXT_PUBLIC_URL
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-indigo-900 to-black px-4">
@@ -44,7 +45,7 @@ const Page = () => {
             id="short"
             readOnly
             className="bg-white/90 p-3 w-[60%] md:w-[70%] text-black rounded-l-lg outline-none font-medium"
-            value={`http://localhost:3000/${myLinks.length > 0 ? myLinks[myLinks.length - 1].shortUrl : ''}`}
+            value={`${domain}/${myLinks.length > 0 ? myLinks[myLinks.length - 1].shortUrl : ''}`}
           />
           <button
             onClick={handleCopy}
