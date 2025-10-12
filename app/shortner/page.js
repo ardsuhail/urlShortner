@@ -136,7 +136,7 @@ const Page = () => {
       name="shortUrl"
       placeholder="write-your-short-url"
       className="flex-1 bg-transparent py-3 pr-2 text-white placeholder-gray-300 
-                 focus:outline-none text-sm sm:text-base"
+               overflow-x-auto  focus:outline-none text-sm sm:text-base"
     />
   </div>
 </div>
