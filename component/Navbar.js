@@ -3,15 +3,17 @@ import React from "react";
 import Link from "next/link";
 import { useState, useRef } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
-
+import { SidebarOpen } from "lucide-react";
+import { useSidebarContext } from "./Context";
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const { sidebarOpen, setSidebarOpen } = useSidebarContext()
   const ref = useRef();
 
   return (
-    <nav className="relative w-full z-50 backdrop-blur-md bg-gradient-to-r from-[#0f0c29]/90 via-[#302b63]/80 to-[#24243e]/90 border-b border-white/20 shadow-2xl">
+    <nav className="relative  z-50 backdrop-blur-md bg-gradient-to-r from-[#0f0c29]/90 via-[#302b63]/80 to-[#24243e]/90 border-b border-white/20 shadow-2xl">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-
+        <SidebarOpen onClick={() => setSidebarOpen(true)} className="sm:hidden flex w-8 h-8 text-white relative left-0 " />
         {/* Logo */}
         <Link
           href="/"
@@ -39,12 +41,12 @@ const Navbar = () => {
 
         {/* CTA Button */}
         <button
-          onClick={() => setOpen(!open)} onBlur={()=>{
+          onClick={() => setOpen(!open)} onBlur={() => {
             setTimeout(() => {
               setOpen(false)
             }, 500);
           }}
-          className="relative group right-12 cursor-pointer flex gap-2 items-center justify-center
+          className="relative group md:right-2   cursor-pointer flex gap-2 items-center justify-center
                      px-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 via-pink-500 to-indigo-600
                      text-white font-semibold shadow-xl hover:scale-105 hover:shadow-2xl transition-all duration-300"
         >
@@ -53,7 +55,7 @@ const Navbar = () => {
 
         {/* Dropdown */}
         {open && (
-          <div className="absolute right-15 top-16 z-50">
+          <div className="absolute sm:right-0 md:right-0  right-0 top-16 z-50">
             <ul
               className="flex flex-col gap-2 bg-white/90 backdrop-blur-md shadow-2xl
                  items-start w-44 py-4 rounded-2xl border border-white/30

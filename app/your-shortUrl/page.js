@@ -10,7 +10,7 @@ const Page = () => {
   const ref = useRef(null)
 
   useEffect(() => {
-      const storedLinks = JSON.parse(sessionStorage.getItem("links")) || [];
+      const storedLinks = JSON.parse(localStorage.getItem("links")) || [];
      if(storedLinks)setMyLinks(storedLinks);
   }, [])
 
