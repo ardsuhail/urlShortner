@@ -104,34 +104,43 @@ const Page = () => {
               Paste the URL to be shortened
             </h2>
 
-            <div className="space-y-4">
-              <input
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
-                type="text"
-                id="url"
-                name="url"
-                placeholder="Enter Your Long(Original) URL"
-                className="w-[100%] px-4 py-3 rounded-xl bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400 transition-all"
-              />
-              <label
-                htmlFor="shorturl"
-                className="flex items-center w-full bg-white/20 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-purple-400 transition-all"
-              >
-                <span className="pl-3 py-2 text-gray-300 bg-white/10  select-none">
-                  {domain}/
-                </span>
-                <input
-                  value={shortUrl}
-                  onChange={(e) => setShortUrl(e.target.value)}
-                  type="text"
-                  id="shorturl"
-                  name="shortUrl"
-                  placeholder="write-your-short-url"
-                  className="flex-1 py-2  bg-white/10 text-white placeholder-gray-300 focus:outline-none"
-                />
-              </label>
-            </div>
+  <div className="space-y-5">
+  {/* Original URL Input */}
+  <input
+    value={url}
+    onChange={(e) => setUrl(e.target.value)}
+    type="text"
+    id="url"
+    name="url"
+    placeholder="Enter your long (original) URL"
+    className="w-full px-4 py-3 rounded-xl bg-white/20 text-white placeholder-gray-300 
+               focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300
+               backdrop-blur-md border border-white/10 hover:bg-white/25"
+  />
+
+  {/* Short URL Input */}
+  <div className="flex items-center w-full rounded-xl bg-white/20 backdrop-blur-md 
+                  border border-white/10 hover:bg-white/25 focus-within:ring-2 
+                  focus-within:ring-purple-500 transition-all duration-300">
+    {/* Domain inside input area */}
+    <span className="pl-4 text-gray-300 whitespace-nowrap select-none">
+      {domain}/
+    </span>
+
+    {/* Short URL typing area */}
+    <input
+      value={shortUrl}
+      onChange={(e) => setShortUrl(e.target.value)}
+      type="text"
+      id="shorturl"
+      name="shortUrl"
+      placeholder="write-your-short-url"
+      className="flex-1 bg-transparent py-3 pr-2 text-white placeholder-gray-300 
+                 focus:outline-none text-sm sm:text-base"
+    />
+  </div>
+</div>
+
 
             <motion.button
               whileHover={!loading ? { scale: 1.05 } : {}}
