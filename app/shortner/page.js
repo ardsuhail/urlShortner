@@ -119,7 +119,7 @@ const Page = () => {
   />
 
   {/* Short URL Input */}
-  <div className="flex items-center w-full rounded-xl bg-white/20 backdrop-blur-md 
+  <div className="flex items-center w-full overflow-x-auto rounded-xl bg-white/20 backdrop-blur-md 
                   border border-white/10 hover:bg-white/25 focus-within:ring-2 
                   focus-within:ring-purple-500 transition-all duration-300">
     {/* Domain inside input area */}
@@ -135,8 +135,8 @@ const Page = () => {
       id="shorturl"
       name="shortUrl"
       placeholder="write-your-short-url"
-      className="flex-1 bg-transparent py-3 pr-2 text-white placeholder-gray-300 
-               overflow-x-auto  focus:outline-none text-sm sm:text-base"
+      className="flex-1 bg-transparent py-3 pr-2  text-white placeholder-gray-300 
+                focus:outline-none text-sm sm:text-base"
     />
   </div>
 </div>

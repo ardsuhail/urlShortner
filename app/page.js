@@ -101,7 +101,7 @@ export default function Home() {
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.2 }}
-        className="mt-10 w-full max-w-md bg-white/10 backdrop-blur-xl rounded-2xl shadow-2xl px-2 py-6 sm:p-6 border border-white/20"
+        className="mt-10 w-full max-w-md bg-white/10 backdrop-blur-xl overflow-hidden rounded-2xl shadow-2xl px-2   sm:px-4 py-6 border border-white/20"
       >
         <h2 className="text-xl font-semibold text-white mb-3">
           Join our community –{" "}
@@ -116,11 +116,11 @@ export default function Home() {
             name="email"
             id="email"
             placeholder="Enter your email"
-            className="flex-1 px-2 sm:px-4 py-2 rounded-lg bg-white/20 text-white placeholder-gray-300 outline-none focus:ring-2 focus:ring-blue-400"
+            className="flex-1 px-2 sm:w-full w-[10vw] sm:px-4 py-2 rounded-lg bg-white/20 text-white placeholder-gray-300 outline-none focus:ring-2 focus:ring-blue-400"
           />
           <button
             onClick={handlesubmit}
-            className=" px-2 sm:px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:scale-105 transition-all duration-300"
+            className=" px-2  sm:px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:scale-105 transition-all duration-300"
           >
             Subscribe
           </button>

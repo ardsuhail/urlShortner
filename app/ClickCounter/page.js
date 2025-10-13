@@ -1,12 +1,14 @@
 "use client"
 import React from "react";
 import { useState } from "react";
+import { LoaderCircle } from "lucide-react";
 
 
 const Page = () => {
   const [shortUrl, setShortUrl] = useState("")
   const [clicks, setClicks] = useState(null)
   const [error, setError] = useState("")
+  const [loading, setloading] = useState(false)
 
   const handleclick = () => {
     if (!shortUrl.trim()) {
@@ -14,6 +16,7 @@ const Page = () => {
       setClicks(null);
       return; 
     }
+    setloading(true)
     let short = shortUrl.trim();
 
     try {
@@ -41,16 +44,19 @@ const Page = () => {
       .then((result) => {
         if (result.success) {
           // alert(result.message)
+          setloading(false)
           setClicks(result.clicks),
             setError("")
         }
         else {
+          setloading(false)
           setError(result.error && "Short Url Not found"),
             setClicks(null)
           // alert((result.message))
         }
       })
       .catch((error) => {
+        setloading(false)
         setError("Server error, please try again later."),
           console.error(error)
       });
@@ -85,7 +91,7 @@ const Page = () => {
 
         {/* Button */}
         <button onClick={() => handleclick()} className="w-full cursor-pointer bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 text-white font-semibold py-3 rounded-xl shadow-lg hover:scale-105 transition-transform duration-300">
-          Count Your Clicks
+          {loading? <span  className="flex gap-2 justify-center items-center" ><LoaderCircle  className="animate-spin  w-5 h-5 text-white" /><p>Counting...</p></span>:"Count Your Clicks"}
         </button>
         {clicks !== null && (
           <p className="text-white text-center mt-4">

@@ -13,6 +13,7 @@
     "lucide-react": "^0.545.0",
     "mongoose": "^8.18.0",
     "next": "15.5.2",
+    "qrcode.react": "^4.2.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "validator": "^13.15.15"
