@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { QRCodeCanvas } from 'qrcode.react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation'
-const page = () => {
+const Page = () => {
     const [loading, setloading] = useState(false)
     const [url, setUrl] = useState("")
     const [error, setError] = useState(null)
@@ -121,24 +121,4 @@ const page = () => {
     )
 }
 
-export default page
-//   {/* 📘 Left Guide */}
-//           <motion.div
-//             initial={{ x: -30, opacity: 0 }}
-//             animate={{ x: 0, opacity: 1 }}
-//             transition={{ delay: 0.2, duration: 0.6 }}
-//             className="flex-1 bg-gradient-to-br from-purple-500/20 via-pink-500/20 to-yellow-500/20 p-6 rounded-xl shadow-lg text-left"
-//           >
-//             <h3 className="text-xl font-bold mb-3 text-white">How to use:</h3>
-//             <ul className="list-disc ml-5 space-y-2 text-sm text-gray-200">
-//               <li><strong>Original URL:</strong> Paste your full link here (e.g., {domain}).</li>
-//               <li><strong>Short URL:</strong> Write anything you want as a custom short link. Example: &quot;my-link&quot;.</li>
-//               <li>The final short URL will look like: <span className="text-purple-300 font-medium">{domain}/your-short-url</span>.</li>
-//               <li>Click <strong>Generate</strong> and your link will be ready to copy and share anywhere.</li>
-//               <li>You can create multiple short links and they will be stored for easy access later.</li>
-//               <li>Feel free to use letters, numbers, or hyphens for your short URL.</li>
-//             </ul>
-//             <p className="mt-3 text-gray-300 text-sm leading-relaxed">
-//               This guide ensures you never get confused about where to paste the original link or what to write for your custom short URL.
-//             </p>
-//           </motion.div>
+export default Page
