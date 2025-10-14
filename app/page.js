@@ -38,7 +38,7 @@ export default function Home() {
 
   return (
     <main className="relative flex flex-col items-center justify-center min-h-[100vh] text-center px-6 overflow-hidden">
-      {/* 🔵 Floating gradient bubbles */}
+     
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -60,7 +60,7 @@ export default function Home() {
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      {/* Content Section */}
+     
       <motion.h1
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -96,7 +96,7 @@ export default function Home() {
         </Link>
       </motion.div>
 
-      {/* Subscribe Section */}
+  
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}

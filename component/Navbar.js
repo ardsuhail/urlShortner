@@ -14,7 +14,6 @@ const Navbar = () => {
     <nav className="relative  z-50 backdrop-blur-md bg-gradient-to-r from-[#0f0c29]/90 via-[#302b63]/80 to-[#24243e]/90 border-b border-white/20 shadow-2xl">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <SidebarOpen onClick={() => setSidebarOpen(true)} className="sm:hidden flex w-8 h-8 text-white relative left-0 " />
-        {/* Logo */}
         <Link
           href="/"
           className="text-3xl font-extrabold tracking-wide bg-gradient-to-r from-[#00F5A0] via-[#00D9F5] to-[#00B0F5] text-transparent bg-clip-text hover:scale-110 transition-transform duration-300 drop-shadow-lg"
@@ -22,13 +21,13 @@ const Navbar = () => {
           Urlixa
         </Link>
 
-        {/* Menu */}
         <ul className="hidden md:flex items-center gap-10 text-[1.1rem] font-medium text-gray-200">
           {[
             { name: "Home", href: "/" },
             { name: "Shortener", href: "/shortner" },
-            { name: "About", href: "/about" },
-            { name: "Feedback", href: "/feedback" },
+            { name: "About Urlixa", href: "/about-urlixa" },
+            { name: "Features", href: "/features" }
+          
           ].map((item) => (
             <li key={item.name} className="relative group cursor-pointer">
               <Link href={item.href} className="hover:text-[#00F5A0] transition-colors duration-300">
@@ -39,7 +38,6 @@ const Navbar = () => {
           ))}
         </ul>
 
-        {/* CTA Button */}
         <button
           onClick={() => setOpen(!open)} onBlur={() => {
             setTimeout(() => {
@@ -53,7 +51,6 @@ const Navbar = () => {
           Dashboard <span className="text-white">{open ? <ChevronUp /> : <ChevronDown className="animate-bounce" />}</span>
         </button>
 
-        {/* Dropdown */}
         {open && (
           <div className="absolute sm:right-0 md:right-0  right-0 top-16 z-50">
             <ul

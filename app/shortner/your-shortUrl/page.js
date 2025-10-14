@@ -25,7 +25,7 @@ const Page = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-indigo-900 to-black px-4">
-      {/* Header Section */}
+     
       <div className="text-center mb-10">
         <h1 className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-pink-500 drop-shadow-lg">
           Your Shortened URL
@@ -35,9 +35,7 @@ const Page = () => {
         </p>
       </div>
 
-      {/* Main Card */}
       <div className="w-full max-w-2xl bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl shadow-2xl p-8 flex flex-col items-center space-y-6 transition-all hover:shadow-purple-700/30 hover:scale-[1.01]">
-        {/* Short Link Box */}
         <label htmlFor="short" className="flex w-full justify-center items-center">
           <input
             ref={ref}
@@ -57,7 +55,6 @@ const Page = () => {
           </button>
         </label>
 
-        {/* Original URL */}
         <p className="text-gray-200 text-center text-sm md:text-base">
           Original URL:{' '}
           <Link
@@ -68,7 +65,6 @@ const Page = () => {
           </Link>
         </p>
 
-        {/* Buttons Section */}
         <div className="flex flex-col sm:flex-row gap-4 w-full justify-center mt-4">
           <Link href="/ClickCounter">
             <button className="  cursor-pointer bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl py-2 px-6 font-semibold shadow-lg hover:shadow-indigo-600/40 hover:scale-105 transition-all">

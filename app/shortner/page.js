@@ -23,7 +23,7 @@ const Page = () => {
       setError("Please write your short URL");
 
       return;
-    }
+    }else
     setloading(true)
     // const fullShortUrl = `${domain}/${shortUrl}`;
     const myHeaders = new Headers();
@@ -54,13 +54,19 @@ const Page = () => {
             localStorage.setItem("links", JSON.stringify(existingLinks));
           }
           // existingLinks.push(newLink);
-          router.push(`/your-shortUrl`)
+          router.push(`/shortner/your-shortUrl`)
           setGenerated(`${process.env.NEXT_PUBLIC_URL}/${shortUrl}`)
           // alert(result.message)
           // setUrl('')
           // setShortUrl('')
           setError("")
           console.log(result)
+        }else{
+          alert(`${result.message}`)
+          setloading(false)
+          setUrl('')
+          setShortUrl('')
+          return
         }
 
       })
@@ -71,7 +77,6 @@ const Page = () => {
   return (
     <>
       <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-950 via-purple-900 to-slate-900 p-4 sm:p-6 relative overflow-hidden">
-        {/* 🔵 Animated gradient orbs for background */}
         <motion.div
           className="absolute w-96 h-96 bg-purple-500/30 rounded-full blur-3xl top-10 left-10 -z-10"
           animate={{ y: [0, 25, 0], x: [0, 15, 0] }}
@@ -83,7 +88,6 @@ const Page = () => {
           transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
         />
 
-        {/* Main Card */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -93,7 +97,6 @@ const Page = () => {
 
 
 
-          {/* 🧩 Right Form */}
           <motion.div
             initial={{ x: 30, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
@@ -105,7 +108,6 @@ const Page = () => {
             </h2>
 
   <div className="space-y-5">
-  {/* Original URL Input */}
   <input
     value={url}
     onChange={(e) => setUrl(e.target.value)}
@@ -118,16 +120,13 @@ const Page = () => {
                backdrop-blur-md border border-white/10 hover:bg-white/25"
   />
 
-  {/* Short URL Input */}
   <div className="flex items-center w-full overflow-x-auto rounded-xl bg-white/20 backdrop-blur-md 
                   border border-white/10 hover:bg-white/25 focus-within:ring-2 
                   focus-within:ring-purple-500 transition-all duration-300">
-    {/* Domain inside input area */}
     <span className="pl-4 text-gray-300 whitespace-nowrap select-none">
       {domain}/
     </span>
 
-    {/* Short URL typing area */}
     <input
       value={shortUrl}
       onChange={(e) => setShortUrl(e.target.value)}
@@ -172,7 +171,6 @@ const Page = () => {
               </motion.p>
             )}
           </motion.div>
-          {/* 📘 Left Guide */}
           <motion.div
             initial={{ x: -30, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}

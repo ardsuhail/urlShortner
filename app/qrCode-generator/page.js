@@ -39,7 +39,7 @@ const Page = () => {
 
     return (
   <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-950 via-purple-900 to-slate-900 p-4 sm:p-6 relative overflow-hidden">
-  {/* 🔵 Animated Orbs */}
+
   <motion.div
     className="absolute w-72 sm:w-96 h-72 sm:h-96 bg-purple-500/30 rounded-full blur-3xl top-10 left-10 -z-10"
     animate={{ y: [0, 25, 0], x: [0, 15, 0] }}
@@ -51,14 +51,13 @@ const Page = () => {
     transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
   />
 
-  {/* 🌟 Main Card */}
   <motion.div
     initial={{ opacity: 0, scale: 0.9 }}
     animate={{ opacity: 1, scale: 1 }}
     transition={{ duration: 0.6 }}
     className="bg-white/5 backdrop-blur-2xl p-4 sm:p-8 rounded-3xl shadow-2xl w-full max-w-5xl flex flex-col md:flex-row items-center justify-center gap-8 border border-white/10 hover:border-white/20 transition-all duration-500"
   >
-    {/* 🧩 Left (Form Section) */}
+   
     <motion.div
       initial={{ x: 30, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}

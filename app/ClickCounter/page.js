@@ -67,7 +67,7 @@ const Page = () => {
   return (
     <div className="flex pb-20 items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900 p-6">
       <div className="bg-white/10 backdrop-blur-lg shadow-2xl rounded-2xl p-8 w-full max-w-lg border border-white/20">
-        {/* Heading */}
+    
         <h1 className="text-3xl font-bold text-white mb-3 text-center">
           Total URL Clicks
         </h1>
@@ -76,7 +76,6 @@ const Page = () => {
           to the destination page.
         </p>
 
-        {/* Input Section */}
         <label
           htmlFor="shorturl"
           className="block text-gray-200 font-medium mb-2"
@@ -89,7 +88,7 @@ const Page = () => {
           placeholder="Your Short URL"
         />
 
-        {/* Button */}
+   
         <button onClick={() => handleclick()} className="w-full cursor-pointer bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 text-white font-semibold py-3 rounded-xl shadow-lg hover:scale-105 transition-transform duration-300">
           {loading? <span  className="flex gap-2 justify-center items-center" ><LoaderCircle  className="animate-spin  w-5 h-5 text-white" /><p>Counting...</p></span>:"Count Your Clicks"}
         </button>
