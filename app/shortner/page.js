@@ -76,123 +76,118 @@ const Page = () => {
 
   return (
     <>
-      <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-950 via-purple-900 to-slate-900 p-4 sm:p-6 relative overflow-hidden">
-        <motion.div
-          className="absolute w-96 h-96 bg-purple-500/30 rounded-full blur-3xl top-10 left-10 -z-10"
-          animate={{ y: [0, 25, 0], x: [0, 15, 0] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute w-[50rem]  h-[50rem] sm:w-[30rem] sm:h-[30rem] bg-pink-500/20 rounded-full blur-3xl bottom-20 right-10 -z-10"
-          animate={{ y: [0, -25, 0], x: [0, -20, 0] }}
-          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-        />
+    
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6 }}
-          className="bg-white/10 backdrop-blur-xl p-2 sm:p-8 rounded-2xl shadow-2xl w-full max-w-5xl flex flex-col md:flex-row gap-6 border border-white/20"
-        >
-
-
-
-          <motion.div
-            initial={{ x: 30, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className="flex-1 bg-gradient-to-br from-purple-600/10 via-pink-500/10 to-yellow-400/10 backdrop-blur-md px-2 sm:px-6 py-6  rounded-xl shadow-lg"
-          >
-            <h2 className="text-[19px] flex justify-center items-center sm:text-2xl w-full font-bold text-white mb-6">
-              Paste the URL to be shortened
-            </h2>
-
-  <div className="space-y-5">
-  <input
-    value={url}
-    onChange={(e) => setUrl(e.target.value)}
-    type="text"
-    id="url"
-    name="url"
-    placeholder="Enter your long (original) URL"
-    className="w-full px-4 py-3 rounded-xl bg-white/20 text-white placeholder-gray-300 
-               focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300
-               backdrop-blur-md border border-white/10 hover:bg-white/25"
+<main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-950 via-purple-900 to-slate-900 p-4 sm:p-6 relative overflow-hidden">
+  {/* Background Animations (Optimized) */}
+  <motion.div
+    className="absolute w-72 h-72 sm:w-80 sm:h-80 bg-purple-500/20 rounded-full blur-3xl top-10 left-10 -z-10"
+    animate={{ y: [0, 15, 0], x: [0, 10, 0] }}
+    transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+  />
+  <motion.div
+    className="absolute w-[25rem] h-[25rem] sm:w-[30rem] sm:h-[30rem] bg-pink-500/15 rounded-full blur-3xl bottom-10 right-10 -z-10"
+    animate={{ y: [0, -15, 0], x: [0, -10, 0] }}
+    transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
   />
 
-  <div className="flex items-center w-full overflow-x-auto rounded-xl bg-white/20 backdrop-blur-md 
-                  border border-white/10 hover:bg-white/25 focus-within:ring-2 
-                  focus-within:ring-purple-500 transition-all duration-300">
-    <span className="pl-4 text-gray-300 whitespace-nowrap select-none">
-      {domain}/
-    </span>
+  {/* Main Card Section */}
+  <motion.div
+    initial={{ opacity: 0, scale: 0.95 }}
+    animate={{ opacity: 1, scale: 1 }}
+    transition={{ duration: 0.5 }}
+    className="bg-white/10 backdrop-blur-xl p-4 sm:p-8 rounded-2xl shadow-2xl w-full max-w-5xl flex flex-col md:flex-row gap-6 border border-white/20"
+  >
 
-    <input
-      value={shortUrl}
-      onChange={(e) => setShortUrl(e.target.value)}
-      type="text"
-      id="shorturl"
-      name="shortUrl"
-      placeholder="write-your-short-url"
-      className="flex-1 bg-transparent py-3 pr-2  text-white placeholder-gray-300 
-                focus:outline-none text-sm sm:text-base"
-    />
-  </div>
-</div>
+    {/* Left Section */}
+    <motion.div
+      initial={{ x: 20, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      transition={{ delay: 0.3, duration: 0.5 }}
+      className="flex-1 bg-gradient-to-br from-purple-600/10 via-pink-500/10 to-yellow-400/10 backdrop-blur-md px-4 py-6 rounded-xl shadow-lg"
+    >
+      <h2 className="text-lg sm:text-2xl text-center font-bold text-white mb-6">
+        Paste the URL to be shortened
+      </h2>
 
+      <div className="space-y-5">
+        <input
+          value={url}
+          onChange={(e) => setUrl(e.target.value)}
+          type="text"
+          placeholder="Enter your long (original) URL"
+          className="w-full px-4 py-3 rounded-xl bg-white/20 text-white placeholder-gray-300 
+                     focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300
+                     backdrop-blur-md border border-white/10 hover:bg-white/25"
+        />
 
-            <motion.button
-              whileHover={!loading ? { scale: 1.05 } : {}}
-              whileTap={!loading ? { scale: 0.95 } : {}}
-              onClick={Generate}
-              disabled={loading}
-              className={`mt-6 w-full py-3 cursor-pointer rounded-xl text-white font-semibold shadow-lg transition-all duration-300 flex items-center justify-center gap-2 ${loading
-                ? "bg-gray-400 opacity-80 cursor-not-allowed"
-                : "bg-gradient-to-r from-green-400 via-slate-600 to-purple-500 hover:shadow-2xl"
-                }`}
-            >
-              {loading ? (
-                <>
-                  <LoaderCircle className="w-5 h-5 cursor-pointer animate-spin text-white" />
-                  <span>Generating...</span>
-                </>
-              ) : (
-                "Generate"
-              )}
-            </motion.button>
+        <div className="flex items-center w-full overflow-x-auto rounded-xl bg-white/20 backdrop-blur-md 
+                        border border-white/10 hover:bg-white/25 focus-within:ring-2 
+                        focus-within:ring-purple-500 transition-all duration-300">
+          <span className="pl-4 text-gray-300 whitespace-nowrap select-none">
+            {domain}/
+          </span>
+          <input
+            value={shortUrl}
+            onChange={(e) => setShortUrl(e.target.value)}
+            type="text"
+            placeholder="write-your-short-url"
+            className="flex-1 bg-transparent py-3 pr-2 text-white placeholder-gray-300 
+                      focus:outline-none text-sm sm:text-base"
+          />
+        </div>
+      </div>
 
-            {error && (
-              <motion.p
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-red-400 text-center mt-4 font-medium"
-              >
-                ❌ {error}
-              </motion.p>
-            )}
-          </motion.div>
-          <motion.div
-            initial={{ x: -30, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.6 }}
-            className="flex-1 bg-gradient-to-br from-purple-500/20 via-pink-500/20 to-yellow-500/20 p-6 rounded-xl shadow-lg text-left"
-          >
-            <h3 className="text-xl font-bold mb-3 text-white">How to use:</h3>
-            <ul className="list-disc ml-5 space-y-2 text-sm text-gray-200">
-              <li><strong>Original URL:</strong> Paste your full link here (e.g., {domain}).</li>
-              <li><strong>Short URL:</strong> Write anything you want as a custom short link. Example: &quot;my-link&quot;.</li>
-              <li>The final short URL will look like: <span className="text-purple-300 font-medium">{domain}/your-short-url</span>.</li>
-              <li>Click <strong>Generate</strong> and your link will be ready to copy and share anywhere.</li>
-              <li>You can create multiple short links and they will be stored for easy access later.</li>
-              <li>Feel free to use letters, numbers, or hyphens for your short URL.</li>
-            </ul>
-            <p className="mt-3 text-gray-300 text-sm leading-relaxed">
-              This guide ensures you never get confused about where to paste the original link or what to write for your custom short URL.
-            </p>
-          </motion.div>
-        </motion.div>
-      </main>
+      <motion.button
+        whileHover={!loading ? { scale: 1.03 } : {}}
+        whileTap={!loading ? { scale: 0.97 } : {}}
+        onClick={Generate}
+        disabled={loading}
+        className={`mt-6 w-full py-3 rounded-xl text-white font-semibold shadow-lg transition-all duration-300 flex items-center justify-center gap-2 ${
+          loading
+            ? "bg-gray-400 opacity-80 cursor-not-allowed"
+            : "bg-gradient-to-r from-green-400 via-slate-600 to-purple-500 hover:shadow-2xl"
+        }`}
+      >
+        {loading ? (
+          <>
+            <LoaderCircle className="w-5 h-5 animate-spin text-white" />
+            <span>Generating...</span>
+          </>
+        ) : (
+          "Generate"
+        )}
+      </motion.button>
 
+      {error && (
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-red-400 text-center mt-4 font-medium"
+        >
+          ❌ {error}
+        </motion.p>
+      )}
+    </motion.div>
+
+    {/* Right Section */}
+    <motion.div
+      initial={{ x: -20, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      transition={{ delay: 0.2, duration: 0.5 }}
+      className="flex-1 bg-gradient-to-br from-purple-500/20 via-pink-500/20 to-yellow-500/20 p-6 rounded-xl shadow-lg text-left"
+    >
+      <h3 className="text-xl font-bold mb-3 text-white">How to use:</h3>
+      <ul className="list-disc ml-5 space-y-2 text-sm text-gray-200">
+        <li><strong>Original URL:</strong> Paste your full link here (e.g., {domain}).</li>
+        <li><strong>Short URL:</strong> Write anything you want as a custom short link.</li>
+        <li>The final short URL looks like: <span className="text-purple-300 font-medium">{domain}/your-short-url</span>.</li>
+        <li>Click <strong>Generate</strong> and your link will be ready to copy and share anywhere.</li>
+        <li>You can create multiple short links stored locally for easy access later.</li>
+      </ul>
+    </motion.div>
+  </motion.div>
+</main>
 
 
     </>
