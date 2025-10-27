@@ -17,6 +17,12 @@ const geistMono = Geist_Mono({
 export const metadata = {
   title: "Urlixa - Fast & Reliable URL Shortener",
   description: "Create custom, memorable, and trackable short URLs easily with Urlixa.",
+  viewport: {
+    width: "device-width",
+    initialScale: 1.0,
+    maximumScale: 1.0,
+    userScalable: false,
+  },
 };
 
 {/* <div className=" bg-gradient-to-br from-indigo-900 via-purple-800 to-black min-h-screen " > */ }
@@ -24,8 +30,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      {/* ${geistSans.variable} ${geistMono.variable} antialiased min-h-screen overflow-x-hidden */}
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased  `}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased  min-h-screen overflow-x-hidden `}
       >
         <Context>
           <Navbar />

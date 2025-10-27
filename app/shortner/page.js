@@ -7,6 +7,7 @@ import { LoaderCircle } from 'lucide-react'
 import { motion } from "framer-motion";
 import Router from 'next/router'
 import { useRouter } from 'next/navigation'
+import { useRef } from 'react'
 const Page = () => {
   const [url, setUrl] = useState("")
   const [shortUrl, setShortUrl] = useState("")
@@ -14,6 +15,11 @@ const Page = () => {
   const [error, setError] = useState("")
   const [loading, setloading] = useState(false)
   const router = useRouter()
+  const focusref = useRef(null);
+  const handlefocus = () => {
+    focusref.current?.focus();
+  };
+
   const Generate = () => {
     if (!url.trim()) {
       setError("Please write your  Orignal URL");
@@ -124,10 +130,11 @@ const Page = () => {
         <div className="flex items-center w-full overflow-x-auto rounded-xl bg-white/20 backdrop-blur-md 
                         border border-white/10 hover:bg-white/25 focus-within:ring-2 
                         focus-within:ring-purple-500 transition-all duration-300">
-          <span className="pl-4 text-gray-300 whitespace-nowrap select-none">
+          <span  onClick={handlefocus} className="pl-4 text-gray-300 whitespace-nowrap select-none">
             {domain}/
           </span>
           <input
+          ref={focusref}
             value={shortUrl}
             onChange={(e) => setShortUrl(e.target.value)}
             type="text"

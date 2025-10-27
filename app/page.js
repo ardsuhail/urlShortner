@@ -99,35 +99,34 @@ export default function Home() {
   </motion.div>
 
   {/* Subscribe Box */}
-  <motion.div
-    initial={{ opacity: 0, y: 30 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 1 }}
-    className="mt-10 w-full max-w-md bg-white/10 backdrop-blur-xl overflow-hidden rounded-2xl shadow-2xl px-3 sm:px-4 py-6 border border-white/20"
-  >
-    <h2 className="text-lg sm:text-xl font-semibold text-white mb-3">
-      Join our community –{" "}
-      <span className="text-blue-400">Subscribe now</span>
-    </h2>
+ <motion.div
+  initial={{ opacity: 0, y: 30 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 1 }}
+  className="mt-10 w-[90%] sm:w-full max-w-md bg-white/10 backdrop-blur-xl rounded-2xl shadow-2xl px-3 sm:px-4 py-6 border border-white/20"
+>
+  <h2 className="text-lg sm:text-xl font-semibold text-white mb-3">
+    Join our community –{" "}
+    <span className="text-blue-400">Subscribe now</span>
+  </h2>
 
-    <div className="flex items-center gap-2">
-      <input
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        type="email"
-        name="email"
-        id="email"
-        placeholder="Enter your email"
-        className="flex-1 px-3 py-2 rounded-lg bg-white/20 text-white placeholder-gray-300 outline-none focus:ring-2 focus:ring-blue-400"
-      />
-      <button
-        onClick={handlesubmit}
-        className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:scale-105 transition-all duration-300"
-      >
-        Subscribe
-      </button>
-    </div>
-  </motion.div>
+  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+    <input
+      value={email}
+      onChange={(e) => setEmail(e.target.value)}
+      type="email"
+      placeholder="Enter your email"
+      className="flex-1 px-3 py-2 rounded-lg bg-white/20 text-white placeholder-gray-300 outline-none focus:ring-2 focus:ring-blue-400"
+    />
+    <button
+      onClick={handlesubmit}
+      className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:scale-105 transition-all duration-300 w-full sm:w-auto"
+    >
+      Subscribe
+    </button>
+  </div>
+</motion.div>
+
 </main>
 
   );
