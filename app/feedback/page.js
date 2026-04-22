@@ -51,7 +51,7 @@ export default function FeedbackPage() {
   return (
     <main className="min-h-screen flex items-center justify-center bg-[#080812] px-4 py-12">
       <div className="absolute inset-0 bg-gradient-to-br from-[#0d0d2b] via-[#0f0a20] to-[#080812] -z-10" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[250px] bg-indigo-600/8 rounded-full blur-3xl -z-10" />
+    
 
       <div className="w-full max-w-lg">
 

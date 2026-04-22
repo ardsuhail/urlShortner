@@ -73,7 +73,7 @@ export default function ShortnerPage() {
 
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0d0d2b] via-[#0f0a20] to-[#080812] -z-10" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-indigo-600/10 rounded-full blur-3xl -z-10" />
+     
 
       <div className="w-full max-w-2xl">
 
