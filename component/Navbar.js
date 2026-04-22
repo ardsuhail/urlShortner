@@ -1,120 +1,84 @@
 "use client"
-import React from "react";
-import Link from "next/link";
-import { useState, useRef } from "react";
-import { ChevronDown, ChevronUp } from "lucide-react";
-import { SidebarOpen } from "lucide-react";
-import { useSidebarContext } from "./Context";
-const Navbar = () => {
-  const [open, setOpen] = useState(false);
-  const { sidebarOpen, setSidebarOpen } = useSidebarContext()
-  const ref = useRef();
+import Link from "next/link"
+import { useState } from "react"
+import { ChevronDown, ChevronUp, SidebarOpen, Link2, BarChart2, QrCode, Grid2X2 } from "lucide-react"
+import { useSidebarContext } from "./Context"
+
+const dashboardLinks = [
+  { href: "/shortner", label: "Shortener", icon: <Link2 className="w-4 h-4" /> },
+  { href: "/ClickCounter", label: "Link Activity", icon: <BarChart2 className="w-4 h-4" /> },
+  { href: "/my-links", label: "My Links", icon: <Grid2X2 className="w-4 h-4" /> },
+  { href: "/qrCode-generator", label: "QR Generator", icon: <QrCode className="w-4 h-4" /> },
+  { href: "/my-QrCodes", label: "My QR Codes", icon: <Grid2X2 className="w-4 h-4" /> },
+]
+
+const navLinks = [
+  { name: "Home", href: "/" },
+  { name: "Shortener", href: "/shortner" },
+  { name: "About", href: "/about-urlixa" },
+  { name: "Features", href: "/features" },
+]
+
+export default function Navbar() {
+  const [open, setOpen] = useState(false)
+  const { setSidebarOpen } = useSidebarContext()
 
   return (
-    <nav className="relative  z-50 backdrop-blur-md bg-gradient-to-r from-[#0f0c29]/90 via-[#302b63]/80 to-[#24243e]/90 border-b border-white/20 shadow-2xl">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <SidebarOpen onClick={() => setSidebarOpen(true)} className="sm:hidden flex w-8 h-8 text-white relative left-0 " />
-        <Link
-          href="/"
-          className="text-3xl font-extrabold tracking-wide bg-gradient-to-r from-[#00F5A0] via-[#00D9F5] to-[#00B0F5] text-transparent bg-clip-text hover:scale-110 transition-transform duration-300 drop-shadow-lg"
-        >
+    <nav className="sticky top-0 z-50 border-b border-white/10 bg-[#080812]/90 backdrop-blur-xl">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+
+        {/* Mobile sidebar toggle */}
+        <button onClick={() => setSidebarOpen(true)} className="md:hidden text-gray-400 hover:text-white transition-colors">
+          <SidebarOpen className="w-6 h-6" />
+        </button>
+
+        {/* Logo */}
+        <Link href="/" className="text-2xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 hover:opacity-80 transition-opacity">
           Urlixa
         </Link>
 
-        <ul className="hidden md:flex items-center gap-10 text-[1.1rem] font-medium text-gray-200">
-          {[
-            { name: "Home", href: "/" },
-            { name: "Shortener", href: "/shortner" },
-            { name: "About Urlixa", href: "/about-urlixa" },
-            { name: "Features", href: "/features" }
-          
-          ].map((item) => (
-            <li key={item.name} className="relative group cursor-pointer">
-              <Link href={item.href} className="hover:text-[#00F5A0] transition-colors duration-300">
+        {/* Desktop nav */}
+        <ul className="hidden md:flex items-center gap-1">
+          {navLinks.map((item) => (
+            <li key={item.name}>
+              <Link
+                href={item.href}
+                className="px-4 py-2 rounded-lg text-sm text-gray-400 hover:text-white hover:bg-white/8 transition-all duration-200"
+              >
                 {item.name}
               </Link>
-              <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-gradient-to-r from-[#00F5A0] via-[#00D9F5] to-[#00B0F5] transition-all duration-300 group-hover:w-full rounded-full"></span>
             </li>
           ))}
         </ul>
 
-        <button
-          onClick={() => setOpen(!open)} onBlur={() => {
-            setTimeout(() => {
-              setOpen(false)
-            }, 500);
-          }}
-          className="relative group md:right-2   cursor-pointer flex gap-2 items-center justify-center
-                     px-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 via-pink-500 to-indigo-600
-                     text-white font-semibold shadow-xl hover:scale-105 hover:shadow-2xl transition-all duration-300"
-        >
-          Dashboard <span className="text-white">{open ? <ChevronUp /> : <ChevronDown className="animate-bounce" />}</span>
-        </button>
+        {/* Dashboard Dropdown */}
+        <div className="relative">
+          <button
+            onClick={() => setOpen(!open)}
+            onBlur={() => setTimeout(() => setOpen(false), 200)}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 
+                       text-white text-sm font-semibold transition-all duration-200"
+          >
+            Dashboard
+            {open ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+          </button>
 
-        {open && (
-          <div className="absolute sm:right-0 md:right-0  right-0 top-16 z-50">
-            <ul
-              className="flex flex-col gap-2 bg-white/90 backdrop-blur-md shadow-2xl
-                 items-start w-44 py-4 rounded-2xl border border-white/30
-                 transition-all duration-300 ease-in-out animate-slideDown"
-            >
-              <li className="w-full">
+          {open && (
+            <div className="absolute right-0 top-12 w-48 bg-[#0f0f1e] border border-white/10 rounded-2xl shadow-2xl overflow-hidden z-50">
+              {dashboardLinks.map((item) => (
                 <Link
-                  href="/shortner"
-                  className="block w-full text-lg text-gray-800 font-medium px-3 py-2 rounded-lg
-                     hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500
-                     hover:text-white transition-all duration-300 shadow-md hover:shadow-lg"
+                  key={item.href}
+                  href={item.href}
+                  className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/8 transition-all duration-150"
                 >
-                  Shortner
+                  <span className="text-gray-500">{item.icon}</span>
+                  {item.label}
                 </Link>
-              </li>
-              <li className="w-full">
-                <Link
-                  href="/ClickCounter"
-                  className="block w-full text-lg text-gray-800 font-medium px-3 py-2 rounded-lg
-                     hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500
-                     hover:text-white transition-all duration-300 shadow-md hover:shadow-lg"
-                >
-                  Links Activity
-                </Link>
-              </li>
-              <li className="w-full">
-                <Link
-                  href="/my-links"
-                  className="block w-full text-lg text-gray-800 font-medium px-3 py-2 rounded-lg
-                     hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500
-                     hover:text-white transition-all duration-300 shadow-md hover:shadow-lg"
-                >
-                  Your Links
-                </Link>
-              </li>
-              <li className="w-full">
-                <Link
-                  href="/qrCode-generator"
-                  className="block w-full text-lg text-gray-800 font-medium px-3 py-2 rounded-lg
-                     hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500
-                     hover:text-white transition-all duration-300 shadow-md hover:shadow-lg"
-                >
-               Generate QrCode
-                </Link>
-              </li>
-              <li className="w-full">
-                <Link
-                  href="/my-QrCodes"
-                  className="block w-full text-lg text-gray-800 font-medium px-3 py-2 rounded-lg
-                     hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-500
-                     hover:text-white transition-all duration-300 shadow-md hover:shadow-lg"
-                >
-               My QrCodes
-                </Link>
-              </li>
-            </ul>
-          </div>
-        )}
-
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </nav>
-  );
-};
-
-export default Navbar;
+  )
+}

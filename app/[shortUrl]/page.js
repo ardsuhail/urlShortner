@@ -4,7 +4,8 @@ import connectDB from "@/db/connectDB";
 
 export default async function Page({ params }) {
   await connectDB();
-  const shortUrl = params.shortUrl;
+  const {shortUrl} = await params;
+  
 
   const doc = await urls.findOneAndUpdate(
     { shortUrl: shortUrl },

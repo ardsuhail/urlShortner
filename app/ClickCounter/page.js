@@ -1,108 +1,136 @@
 "use client"
-import React from "react";
-import { useState } from "react";
-import { LoaderCircle } from "lucide-react";
+import { useState } from "react"
+import { LoaderCircle, MousePointerClick } from "lucide-react"
 
+// Smart parser - handles full URL, with/without https, or just slug
+const extractSlug = (input) => {
+  const trimmed = input.trim()
+  try {
+    // If it's a valid URL (with or without protocol)
+    const withProtocol = trimmed.startsWith("http") ? trimmed : `https://${trimmed}`
+    const urlObj = new URL(withProtocol)
+    // pathname gives "/neat-web-384" -> strip the slash
+    const slug = urlObj.pathname.replace(/^\/+/, "")
+    return slug || trimmed
+  } catch {
+    // Not a URL — treat as raw slug
+    return trimmed
+  }
+}
 
-const Page = () => {
+export default function Page() {
   const [shortUrl, setShortUrl] = useState("")
   const [clicks, setClicks] = useState(null)
   const [error, setError] = useState("")
-  const [loading, setloading] = useState(false)
+  const [loading, setLoading] = useState(false)
 
-  const handleclick = () => {
+  const handleCheck = async () => {
     if (!shortUrl.trim()) {
-      setError("Please write your short URL");
-      setClicks(null);
-      return; 
+      setError("Please enter a short URL or slug")
+      setClicks(null)
+      return
     }
-    setloading(true)
-    let short = shortUrl.trim();
+
+    const slug = extractSlug(shortUrl)
+    setLoading(true)
+    setError("")
+    setClicks(null)
 
     try {
-      const urlObj = new URL(short); // agar valid URL hai
-      short = urlObj.pathname.replace(/^\/+/, ""); // remove starting slash
-    } catch (e) {
-      // agar user ne sirf shortURL diya (shopovix) to koi problem nahi
-    }
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-
-    const raw = JSON.stringify({
-      "shortUrl": short
-    });
-
-    const requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: raw,
-      redirect: "follow"
-    };
-
-    fetch("/api/clicks", requestOptions)
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.success) {
-          // alert(result.message)
-          setloading(false)
-          setClicks(result.clicks),
-            setError("")
-        }
-        else {
-          setloading(false)
-          setError(result.error && "Short Url Not found"),
-            setClicks(null)
-          // alert((result.message))
-        }
+      const res = await fetch("/api/clicks", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ shortUrl: slug }),
       })
-      .catch((error) => {
-        setloading(false)
-        setError("Server error, please try again later."),
-          console.error(error)
-      });
+      const result = await res.json()
 
+      if (result.success) {
+        setClicks(result.clicks)
+      } else {
+        setError("Short URL not found. Please check and try again.")
+      }
+    } catch {
+      setError("Server error. Please try again later.")
+    } finally {
+      setLoading(false)
+    }
   }
 
-
   return (
-    <div className="flex pb-20 items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900 p-6">
-      <div className="bg-white/10 backdrop-blur-lg shadow-2xl rounded-2xl p-8 w-full max-w-lg border border-white/20">
-    
-        <h1 className="text-3xl font-bold text-white mb-3 text-center">
-          Total URL Clicks
-        </h1>
-        <p className="text-gray-300 text-sm text-center mb-6">
-          The number of clicks from the shortened URL that redirected the user
-          to the destination page.
-        </p>
+    <main className="min-h-screen flex items-center justify-center bg-[#080812] px-4 py-12">
+      <div className="absolute inset-0 bg-gradient-to-br from-[#0d0d2b] via-[#0f0a20] to-[#080812] -z-10" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[250px] bg-yellow-500/8 rounded-full blur-3xl -z-10" />
 
-        <label
-          htmlFor="shorturl"
-          className="block text-gray-200 font-medium mb-2"
-        >
-          Type Your Short <b className="text-yellow-300">URL</b> below
-        </label>
-        <input value={shortUrl} onChange={(e) => setShortUrl(e.target.value)} type="text"
-          id="shorturl"
-          className="w-full bg-white/20 text-white placeholder-gray-400 p-3 rounded-xl border border-white/30 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400 outline-none mb-5"
-          placeholder="Your Short URL"
-        />
+      <div className="w-full max-w-md">
 
-   
-        <button onClick={() => handleclick()} className="w-full cursor-pointer bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 text-white font-semibold py-3 rounded-xl shadow-lg hover:scale-105 transition-transform duration-300">
-          {loading? <span  className="flex gap-2 justify-center items-center" ><LoaderCircle  className="animate-spin  w-5 h-5 text-white" /><p>Counting...</p></span>:"Count Your Clicks"}
-        </button>
-        {clicks !== null && (
-          <p className="text-white text-center mt-4">
-            ✅ Total Clicks: <b>{clicks}</b>
+        {/* Header */}
+        <div className="text-center mb-8">
+          <div className="w-14 h-14 rounded-2xl bg-yellow-500/15 border border-yellow-500/25 flex items-center justify-center mx-auto mb-4">
+            <MousePointerClick className="w-7 h-7 text-yellow-400" />
+          </div>
+          <h1 className="text-3xl font-black text-white mb-2">Click Counter</h1>
+          <p className="text-gray-400 text-sm">
+            Check how many times your short URL has been clicked
           </p>
-        )}
-        {error && (
-          <p className="text-red-400 text-center mt-4">❌ {error}</p>
-        )}
-      </div>
-    </div>
-  );
-};
+        </div>
 
-export default Page;
+        {/* Card */}
+        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm">
+
+          <label className="block text-sm text-gray-400 mb-2">
+            Short URL or Slug
+          </label>
+          <input
+            value={shortUrl}
+            onChange={(e) => {
+              setShortUrl(e.target.value)
+              if (error) setError("")
+              if (clicks !== null) setClicks(null)
+            }}
+            onKeyDown={(e) => e.key === "Enter" && handleCheck()}
+            type="text"
+            placeholder="neat-web-384 or https://urlixa.com/neat-web-384"
+            className="w-full px-4 py-3 rounded-xl bg-white/8 border border-white/15 text-white placeholder-gray-600
+                       outline-none focus:border-yellow-500 focus:bg-white/10 transition-all duration-200 text-sm mb-4"
+          />
+
+          <button
+            onClick={handleCheck}
+            disabled={loading}
+            className="w-full py-3 rounded-xl font-semibold text-white text-sm transition-all duration-200
+                       bg-yellow-500 hover:bg-yellow-400 text-black disabled:opacity-60 disabled:cursor-not-allowed
+                       flex items-center justify-center gap-2"
+          >
+            {loading ? (
+              <>
+                <LoaderCircle className="w-4 h-4 animate-spin" />
+                Checking...
+              </>
+            ) : (
+              "Check Clicks"
+            )}
+          </button>
+
+          {/* Result */}
+          {clicks !== null && (
+            <div className="mt-4 p-4 rounded-xl bg-green-500/10 border border-green-500/20 text-center">
+              <p className="text-green-400 text-sm mb-1">Total Clicks</p>
+              <p className="text-4xl font-black text-white">{clicks}</p>
+            </div>
+          )}
+
+          {error && (
+            <p className="text-red-400 text-sm mt-4 flex items-center gap-2">
+              <span>⚠</span> {error}
+            </p>
+          )}
+        </div>
+
+        {/* Hint */}
+        <p className="text-gray-600 text-xs text-center mt-4">
+          Works with slugs like <span className="text-gray-500 font-mono">neat-web-384</span> or full URLs
+        </p>
+      </div>
+    </main>
+  )
+}

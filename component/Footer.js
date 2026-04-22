@@ -1,100 +1,105 @@
 "use client"
-import Link from "next/link";
+import Link from "next/link"
 
-const Footer = () => {
+const socialLinks = [
+  {
+    label: "Instagram",
+    href: "https://instagram.com/ardsuhail",
+    icon: "/instagram.png",
+    handle: "@ardsuhail",
+  },
+  {
+    label: "GitHub",
+    href: "https://github.com/suhail134",
+    icon: "/github.png",
+    handle: "suhail134",
+  },
+  {
+    label: "LinkedIn",
+    href: "https://linkedin.com/in/suhail-ahmed-566a60315/",
+    icon: "/linkedin.webp",
+    handle: "Suhail Ahmed",
+  },
+  {
+    label: "Website",
+    href: "https://www.ardsuhail.com",
+    icon: null,
+    handle: "ardsuhail.com",
+  },
+]
+
+const supportLinks = [
+  { label: "Privacy Policy", href: "/privacy-policy" },
+  { label: "Terms of Service", href: "/terms-of-service" },
+  { label: "Features", href: "/features" },
+  { label: "Feedback", href: "/feedback" },
+  { label: "About", href: "/about-urlixa" },
+]
+
+export default function Footer() {
   return (
-    <footer className="relative overflow-hidden text-gray-300 w-full py-10">
-      <div className="absolute inset-0 bg-gradient-to-r from-[#0f0c29] via-[#302b63] to-[#24243e] animate-gradient-x opacity-90 -z-10"></div>
+    <footer className="bg-[#080812] border-t border-white/8 text-gray-400">
+      <div className="max-w-6xl mx-auto px-6 py-10 grid sm:grid-cols-3 gap-8">
 
-      <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-8 relative z-10">
+        {/* Brand */}
+        <div>
+          <Link href="/" className="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 block mb-3">
+            Urlixa
+          </Link>
+          <p className="text-sm leading-relaxed text-gray-500">
+            Fast, reliable URL shortener and QR code generator. Built by Suhail.
+          </p>
+        </div>
 
-        <div className="space-y-4">
-          <h2 className="text-xl font-bold text-[#00F5A0] mb-3 tracking-wide">
-            Support
-          </h2>
-          <ul className="space-y-2 text-sm">
-            {["privacy-policy", "Feedback", "Terms-of-Service","Features"].map((item, idx) => (
-              <li key={idx}>
+        {/* Support Links */}
+        <div>
+          <h3 className="text-white font-semibold text-sm mb-4">Support</h3>
+          <ul className="space-y-2">
+            {supportLinks.map((link) => (
+              <li key={link.href}>
                 <Link
-                  href={`/${item.toLowerCase().replace(" ", "-")}`}
-                  className="relative group hover:text-[#00D9F5] transition-colors duration-300"
+                  href={link.href}
+                  className="text-sm text-gray-500 hover:text-white transition-colors duration-200"
                 >
-                  {item}
-                  <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-[#00D9F5] group-hover:w-full transition-all duration-300 rounded-full"></span>
+                  {link.label}
                 </Link>
               </li>
             ))}
           </ul>
         </div>
 
-<div className="space-y-6">
-  <h2 className="text-xl font-bold text-[#00F5A0] mb-3 tracking-wide">
-    Connect with Me
-  </h2>
-  <ul className="space-y-3 text-sm">
-    <li className="flex items-center gap-3">
-      <img className="w-8 h-8 rounded-full shadow-lg" src="/instagram.png" alt="Instagram" />
-      <Link
-        href="https://www.instagram.com/ardsuhail"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="relative group font-medium hover:text-[#00D9F5] transition-colors duration-300"
-      >
-        Instagram
-        <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-[#00D9F5] group-hover:w-full transition-all duration-300 rounded-full"></span>
-      </Link>
-    </li>
-
-    <li className="flex items-center gap-3">
-      <img className="w-8 h-8 rounded-full shadow-lg" src="/github.png" alt="GitHub" />
-      <Link
-        href="https://github.com/suhail134"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="relative group font-medium hover:text-[#00D9F5] transition-colors duration-300"
-      >
-        GitHub
-        <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-[#00D9F5] group-hover:w-full transition-all duration-300 rounded-full"></span>
-      </Link>
-    </li>
-
-    <li className="flex items-center gap-3">
-      <img className="w-8 h-8 rounded-full shadow-lg" src="/linkedin.webp" alt="LinkedIn" />
-      <Link
-        href="https://www.linkedin.com/in/suhail-ahmed-566a60315/"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="relative group font-medium hover:text-[#00D9F5] transition-colors duration-300"
-      >
-        LinkedIn
-        <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-[#00D9F5] group-hover:w-full transition-all duration-300 rounded-full"></span>
-      </Link>
-    </li>
-  </ul>
-</div>
-
+        {/* Social Links */}
+        <div>
+          <h3 className="text-white font-semibold text-sm mb-4">Connect</h3>
+          <ul className="space-y-3">
+            {socialLinks.map((s) => (
+              <li key={s.label}>
+                <Link
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2.5 group"
+                >
+                  {s.icon ? (
+                    <img src={s.icon} alt={s.label} className="w-5 h-5 rounded-full opacity-70 group-hover:opacity-100 transition-opacity" />
+                  ) : (
+                    <span className="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center text-xs text-gray-400">🌐</span>
+                  )}
+                  <span className="text-sm text-gray-500 group-hover:text-white transition-colors duration-200">
+                    {s.handle}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
 
-      <div className="flex justify-center mt-8 relative z-10">
-        <hr className="border-t border-gray-700 w-1/2 md:w-1/3" />
+      <div className="border-t border-white/8 py-4 text-center">
+        <p className="text-xs text-gray-600">
+          © {new Date().getFullYear()} Urlixa. All rights reserved.
+        </p>
       </div>
-
-      <p className="text-xs text-gray-400 mt-4 text-center relative z-10">
-        © {new Date().getFullYear()} Urlixa | All Rights Reserved
-      </p>
-
-      <style jsx>{`
-        @keyframes gradient-x {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-        }
-        .animate-gradient-x {
-          background-size: 200% 200%;
-          animation: gradient-x 15s ease infinite;
-        }
-      `}</style>
     </footer>
-  );
-};
-
-export default Footer;
+  )
+}

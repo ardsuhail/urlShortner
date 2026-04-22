@@ -1,104 +1,104 @@
 "use client"
-import React from 'react'
-import { useState, useEffect } from 'react';
-import { motion } from "framer-motion";
-import { QRCodeCanvas } from 'qrcode.react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { Download } from 'lucide-react';
-import { useRef } from 'react';
-const Page = () => {
+import { useState, useEffect, useRef } from 'react'
+import { useRouter } from 'next/navigation'
+import { QRCodeCanvas } from 'qrcode.react'
+import { Download, Plus, Grid2X2, Home } from 'lucide-react'
+
+export default function QRResultPage() {
   const router = useRouter()
-  const [newQrCode, setNewQrCode] = useState([])
+  const [latestQR, setLatestQR] = useState(null)
   const qrRef = useRef(null)
+
   useEffect(() => {
-    const storedQrCode = JSON.parse(localStorage.getItem("qrCode")) || [];
-    setNewQrCode(storedQrCode[storedQrCode.length - 1] || null);
-  }, []);
+    const stored = JSON.parse(localStorage.getItem("qrCode")) || []
+    setLatestQR(stored[stored.length - 1] || null)
+  }, [])
+
   const handleDownload = () => {
-    const canvas = qrRef.current; // ✅ Directly use ref from QRCodeCanvas
-    const url = canvas.toDataURL("image/png"); // Convert canvas to image
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "MyQRCode.png";
-    link.click();
-  };
+    const canvas = qrRef.current
+    if (!canvas) return
+    const url = canvas.toDataURL("image/png")
+    const link = document.createElement("a")
+    link.href = url
+    link.download = "qrcode.png"
+    link.click()
+  }
+
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-indigo-950 via-purple-900 to-slate-900 p-4 sm:p-6 relative overflow-hidden">
+    <main className="min-h-screen flex flex-col items-center justify-center bg-[#080812] px-4 py-12">
 
-      
-      <motion.div
-        className="absolute w-72 sm:w-96 h-72 sm:h-96 bg-purple-500/30 rounded-full blur-3xl top-10 left-10 -z-10"
-        animate={{ y: [0, 25, 0], x: [0, 15, 0] }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="absolute w-[20rem] sm:w-[30rem] h-[20rem] sm:h-[30rem] bg-pink-500/20 rounded-full blur-3xl bottom-20 right-10 -z-10"
-        animate={{ y: [0, -25, 0], x: [0, -20, 0] }}
-        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-      />
+      {/* Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#0d0d2b] via-[#0f0a20] to-[#080812] -z-10" />
+      <div className="absolute top-0 right-1/4 w-[400px] h-[300px] bg-purple-600/10 rounded-full blur-3xl -z-10" />
 
-     
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.6 }}
-        className="bg-white/10 backdrop-blur-xl p-6 sm:p-8 rounded-3xl shadow-2xl flex flex-col items-center gap-6 max-w-md w-full border border-white/20"
-      >
-      
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.6 }}
-          className="flex flex-col items-center gap-3 w-full"
+      <div className="w-full max-w-sm">
+
+        <h1 className="text-3xl font-black text-white text-center mb-2">Your QR Code</h1>
+        <p className="text-gray-400 text-center text-sm mb-8">Scan or download to share</p>
+
+        {/* QR Card */}
+        <div className="bg-white rounded-2xl p-6 flex flex-col items-center mb-4 shadow-2xl shadow-purple-500/10">
+          {latestQR ? (
+            <QRCodeCanvas
+              ref={qrRef}
+              value={latestQR.qrcode}
+              size={200}
+              bgColor="#ffffff"
+              fgColor="#0d0d2b"
+              level="H"
+            />
+          ) : (
+            <div className="w-[200px] h-[200px] bg-gray-100 rounded-lg flex items-center justify-center">
+              <p className="text-gray-400 text-sm">No QR found</p>
+            </div>
+          )}
+
+          {latestQR && (
+            <p className="text-gray-500 text-xs mt-4 break-all text-center max-w-[200px]">
+              {latestQR.url}
+            </p>
+          )}
+        </div>
+
+        {/* Download */}
+        <button
+          onClick={handleDownload}
+          className="w-full py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-semibold text-sm
+                     transition-all duration-200 hover:shadow-lg hover:shadow-purple-500/25 
+                     flex items-center justify-center gap-2 mb-4"
         >
-          <QRCodeCanvas
-            ref={qrRef}
-            value={newQrCode.qrcode}
-            size={200}
-            className="rounded-xl border border-white/20 p-3 bg-white/10 shadow-lg"
-          />
-       
-          <p className="text-sm sm:text-base text-gray-300 mt-2 break-all text-center">
-            {newQrCode?.url || "No URL available"}
-          </p>
-             <div className="download absolute top-9 right-1 md:top-9 md:right-0  flex flex-col justify-center items-center gap-1 ">
-                           <Download onClick={handleDownload} className="w-10 h-10 text-black bg-gray-200 p-2 rounded-full cursor-pointer  animate-bounce " /> <span className="text-xs animate-pulse text-white" >download</span>
-                         </div>
-        </motion.div>
+          <Download className="w-4 h-4" />
+          Download PNG
+        </button>
 
-
-        <div className="flex flex-col sm:flex-row gap-3 mt-4 w-full justify-center">
-   
+        {/* Action Buttons */}
+        <div className="grid grid-cols-3 gap-2">
           <button
             onClick={() => router.push("/")}
-            className="flex-1 cursor-pointer py-2 rounded-xl bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 text-white font-semibold shadow-lg hover:scale-105 transition-all duration-300"
+            className="py-2.5 rounded-xl bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:bg-white/8 
+                       transition-all duration-200 text-xs font-medium flex flex-col items-center gap-1"
           >
-            Back to Home
+            <Home className="w-4 h-4" />
+            Home
           </button>
-
-    
           <button
-            onClick={() => router.push("/qrCode-generator")} // apni function call
-            className="flex-1 cursor-pointer py-2 rounded-xl bg-gradient-to-r from-green-400 via-teal-500 to-lime-400 text-white font-semibold shadow-lg hover:scale-105 transition-all duration-300"
+            onClick={() => router.push("/qrCode-generator")}
+            className="py-2.5 rounded-xl bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:bg-white/8 
+                       transition-all duration-200 text-xs font-medium flex flex-col items-center gap-1"
           >
-            Generate Another
+            <Plus className="w-4 h-4" />
+            New QR
           </button>
-         
-
-        
           <button
             onClick={() => router.push("/my-QrCodes")}
-            className="flex-1 cursor-pointer py-2 rounded-xl bg-gradient-to-r from-pink-500 via-red-500 to-yellow-400 text-white font-semibold shadow-lg hover:scale-105 transition-all duration-300"
+            className="py-2.5 rounded-xl bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:bg-white/8 
+                       transition-all duration-200 text-xs font-medium flex flex-col items-center gap-1"
           >
-            My QR Codes
+            <Grid2X2 className="w-4 h-4" />
+            My QRs
           </button>
         </div>
-      </motion.div>
+      </div>
     </main>
-
-
   )
 }
-
-export default Page

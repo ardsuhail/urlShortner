@@ -1,204 +1,197 @@
 "use client"
-import React from 'react'
-import { useState } from 'react'
-import Link from 'next/link'
-import ClickCount from '@/component/ClickCount'
-import { LoaderCircle } from 'lucide-react'
-import { motion } from "framer-motion";
-import Router from 'next/router'
+import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
-import { useRef } from 'react'
-const Page = () => {
-  const [url, setUrl] = useState("")
-  const [shortUrl, setShortUrl] = useState("")
-  const [Generated, setGenerated] = useState("")
-  const [error, setError] = useState("")
-  const [loading, setloading] = useState(false)
-  const router = useRouter()
-  const focusref = useRef(null);
-  const handlefocus = () => {
-    focusref.current?.focus();
-  };
+import { LoaderCircle, Shuffle, ChevronDown, ChevronUp } from 'lucide-react'
 
-  const Generate = () => {
-    if (!url.trim()) {
-      setError("Please write your  Orignal URL");
-
-      return; // yaha hi ruk jao, request mat bhejo
-    } else if (!shortUrl.trim()) {
-      setError("Please write your short URL");
-
-      return;
-    }else
-    setloading(true)
-    // const fullShortUrl = `${domain}/${shortUrl}`;
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-
-    const raw = JSON.stringify({
-      "url": url,
-      "shortUrl": shortUrl,
-      "error": error
-    });
-
-    const requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: raw,
-      redirect: "follow"
-    };
-
-    fetch("/api/generate", requestOptions)
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.success) {
-          const newLink = { shortUrl: shortUrl, url: url }
-          const existingLinks = JSON.parse(localStorage.getItem("links")) || [];
-          const alreadyExists = existingLinks.some((link) => link.shortUrl === shortUrl);
-          if (!alreadyExists) {
-            existingLinks.push(newLink);
-            localStorage.setItem("links", JSON.stringify(existingLinks));
-          }
-          // existingLinks.push(newLink);
-          router.push(`/shortner/your-shortUrl`)
-          setGenerated(`${process.env.NEXT_PUBLIC_URL}/${shortUrl}`)
-          // alert(result.message)
-          // setUrl('')
-          // setShortUrl('')
-          setError("")
-          console.log(result)
-        }else{
-          alert(`${result.message}`)
-          setloading(false)
-          setUrl('')
-          setShortUrl('')
-          return
-        }
-
-      })
-      .catch((error) => console.error(error));
-  }
-  const domain = process.env.NEXT_PUBLIC_URL
-
-  return (
-    <>
-    
-
-<main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-950 via-purple-900 to-slate-900 p-4 sm:p-6 relative overflow-hidden">
-  {/* Background Animations (Optimized) */}
-  <motion.div
-    className="absolute w-72 h-72 sm:w-80 sm:h-80 bg-purple-500/20 rounded-full blur-3xl top-10 left-10 -z-10"
-    animate={{ y: [0, 15, 0], x: [0, 10, 0] }}
-    transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-  />
-  <motion.div
-    className="absolute w-[25rem] h-[25rem] sm:w-[30rem] sm:h-[30rem] bg-pink-500/15 rounded-full blur-3xl bottom-10 right-10 -z-10"
-    animate={{ y: [0, -15, 0], x: [0, -10, 0] }}
-    transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-  />
-
-  {/* Main Card Section */}
-  <motion.div
-    initial={{ opacity: 0, scale: 0.95 }}
-    animate={{ opacity: 1, scale: 1 }}
-    transition={{ duration: 0.5 }}
-    className="bg-white/10 backdrop-blur-xl p-4 sm:p-8 rounded-2xl shadow-2xl w-full max-w-5xl flex flex-col md:flex-row gap-6 border border-white/20"
-  >
-
-    {/* Left Section */}
-    <motion.div
-      initial={{ x: 20, opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
-      transition={{ delay: 0.3, duration: 0.5 }}
-      className="flex-1 bg-gradient-to-br from-purple-600/10 via-pink-500/10 to-yellow-400/10 backdrop-blur-md px-4 py-6 rounded-xl shadow-lg"
-    >
-      <h2 className="text-lg sm:text-2xl text-center font-bold text-white mb-6">
-        Paste the URL to be shortened
-      </h2>
-
-      <div className="space-y-5">
-        <input
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-          type="text"
-          placeholder="Enter your long (original) URL"
-          className="w-full px-4 py-3 rounded-xl bg-white/20 text-white placeholder-gray-300 
-                     focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300
-                     backdrop-blur-md border border-white/10 hover:bg-white/25"
-        />
-
-        <div className="flex items-center w-full overflow-x-auto rounded-xl bg-white/20 backdrop-blur-md 
-                        border border-white/10 hover:bg-white/25 focus-within:ring-2 
-                        focus-within:ring-purple-500 transition-all duration-300">
-          <span  onClick={handlefocus} className="pl-4 text-gray-300 whitespace-nowrap select-none">
-            {domain}/
-          </span>
-          <input
-          ref={focusref}
-            value={shortUrl}
-            onChange={(e) => setShortUrl(e.target.value)}
-            type="text"
-            placeholder="write-your-short-url"
-            className="flex-1 bg-transparent py-3 pr-2 text-white placeholder-gray-300 
-                      focus:outline-none text-sm sm:text-base"
-          />
-        </div>
-      </div>
-
-      <motion.button
-        whileHover={!loading ? { scale: 1.03 } : {}}
-        whileTap={!loading ? { scale: 0.97 } : {}}
-        onClick={Generate}
-        disabled={loading}
-        className={`mt-6 w-full py-3 rounded-xl text-white font-semibold shadow-lg transition-all duration-300 flex items-center justify-center gap-2 ${
-          loading
-            ? "bg-gray-400 opacity-80 cursor-not-allowed"
-            : "bg-gradient-to-r from-green-400 via-slate-600 to-purple-500 hover:shadow-2xl"
-        }`}
-      >
-        {loading ? (
-          <>
-            <LoaderCircle className="w-5 h-5 animate-spin text-white" />
-            <span>Generating...</span>
-          </>
-        ) : (
-          "Generate"
-        )}
-      </motion.button>
-
-      {error && (
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-red-400 text-center mt-4 font-medium"
-        >
-          ❌ {error}
-        </motion.p>
-      )}
-    </motion.div>
-
-    {/* Right Section */}
-    <motion.div
-      initial={{ x: -20, opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
-      transition={{ delay: 0.2, duration: 0.5 }}
-      className="flex-1 bg-gradient-to-br from-purple-500/20 via-pink-500/20 to-yellow-500/20 p-6 rounded-xl shadow-lg text-left"
-    >
-      <h3 className="text-xl font-bold mb-3 text-white">How to use:</h3>
-      <ul className="list-disc ml-5 space-y-2 text-sm text-gray-200">
-        <li><strong>Original URL:</strong> Paste your full link here (e.g., {domain}).</li>
-        <li><strong>Short URL:</strong> Write anything you want as a custom short link.</li>
-        <li>The final short URL looks like: <span className="text-purple-300 font-medium">{domain}/your-short-url</span>.</li>
-        <li>Click <strong>Generate</strong> and your link will be ready to copy and share anywhere.</li>
-        <li>You can create multiple short links stored locally for easy access later.</li>
-      </ul>
-    </motion.div>
-  </motion.div>
-</main>
-
-
-    </>
-  )
+// Random short URL generator
+const generateRandomSlug = () => {
+  const adjectives = ["swift", "clean", "cool", "neat", "tiny", "mini", "fast", "slim"]
+  const nouns = ["link", "url", "path", "web", "site", "page", "hub", "go"]
+  const randomNum = Math.floor(Math.random() * 900) + 100
+  const adj = adjectives[Math.floor(Math.random() * adjectives.length)]
+  const noun = nouns[Math.floor(Math.random() * nouns.length)]
+  return `${adj}-${noun}-${randomNum}`
 }
 
-export default Page
+export default function ShortnerPage() {
+  const [url, setUrl] = useState("")
+  const [shortUrl, setShortUrl] = useState("")
+  const [error, setError] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [useCustom, setUseCustom] = useState(false)
+  const focusRef = useRef(null)
+  const router = useRouter()
+  const domain = process.env.NEXT_PUBLIC_URL
+
+  const handleGenerate = async () => {
+    if (!url.trim()) {
+      setError("Please enter the original URL")
+      return
+    }
+
+    // Auto-generate slug if user didn't provide one
+    const finalShortUrl = shortUrl.trim() || generateRandomSlug()
+
+    if (!shortUrl.trim()) {
+      setShortUrl(finalShortUrl)
+    }
+
+    setError("")
+    setLoading(true)
+
+    try {
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url, shortUrl: finalShortUrl }),
+      })
+      const result = await res.json()
+
+      if (result.success) {
+        const newLink = { shortUrl: finalShortUrl, url }
+        const existingLinks = JSON.parse(localStorage.getItem("links")) || []
+        const alreadyExists = existingLinks.some((link) => link.shortUrl === finalShortUrl)
+        if (!alreadyExists) {
+          existingLinks.push(newLink)
+          localStorage.setItem("links", JSON.stringify(existingLinks))
+        }
+        router.push("/shortner/your-shortUrl")
+      } else {
+        setError(result.message || "Something went wrong")
+        setLoading(false)
+        setUrl("")
+        setShortUrl("")
+      }
+    } catch {
+      setError("Network error. Please try again.")
+      setLoading(false)
+    }
+  }
+
+  return (
+    <main className="min-h-screen flex items-center justify-center bg-[#080812] px-4 py-12">
+
+      {/* Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#0d0d2b] via-[#0f0a20] to-[#080812] -z-10" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-indigo-600/10 rounded-full blur-3xl -z-10" />
+
+      <div className="w-full max-w-2xl">
+
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl sm:text-4xl font-black text-white mb-2">URL Shortener</h1>
+          <p className="text-gray-400 text-sm">Paste your long URL — we will handle the rest</p>
+        </div>
+
+        {/* Main Card */}
+        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 sm:p-8 backdrop-blur-sm">
+
+          {/* Original URL Input */}
+          <div className="mb-4">
+            <label className="block text-sm text-gray-400 mb-2">Original URL</label>
+            <input
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              type="url"
+              placeholder="https://example.com/very-long-url..."
+              className="w-full px-4 py-3 rounded-xl bg-white/8 border border-white/15 text-white placeholder-gray-600 
+                         outline-none focus:border-indigo-500 focus:bg-white/10 transition-all duration-200 text-sm"
+            />
+          </div>
+
+          {/* Short URL Section */}
+          <div className="mb-6">
+            <div className="flex items-center justify-between mb-2">
+              <label className="block text-sm text-gray-400">Short URL</label>
+              <button
+                onClick={() => setUseCustom(!useCustom)}
+                className="text-xs text-indigo-400 hover:text-indigo-300 flex items-center gap-1 transition-colors"
+              >
+                {useCustom ? "Use random" : "Customize"}
+                {useCustom ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+              </button>
+            </div>
+
+            {useCustom ? (
+              // Custom slug input
+              <div className="flex items-center rounded-xl bg-white/8 border border-white/15 focus-within:border-indigo-500 transition-all duration-200 overflow-hidden">
+                <span
+                  onClick={() => focusRef.current?.focus()}
+                  className="px-3 py-3 text-gray-500 text-sm whitespace-nowrap border-r border-white/10 select-none cursor-text bg-white/5"
+                >
+                  {domain}/
+                </span>
+                <input
+                  ref={focusRef}
+                  value={shortUrl}
+                  onChange={(e) => setShortUrl(e.target.value)}
+                  type="text"
+                  placeholder="my-custom-slug"
+                  className="flex-1 px-3 py-3 bg-transparent text-white placeholder-gray-600 outline-none text-sm"
+                />
+              </div>
+            ) : (
+              // Random slug display + regenerate
+              <div className="flex items-center gap-2">
+                <div className="flex-1 flex items-center rounded-xl bg-white/5 border border-white/10 px-3 py-3 gap-2">
+                  <span className="text-gray-500 text-sm">{domain}/</span>
+                  <span className="text-gray-300 text-sm font-mono">
+                    {shortUrl || <span className="text-gray-600 italic">auto-generated on submit</span>}
+                  </span>
+                </div>
+                <button
+                  onClick={() => setShortUrl(generateRandomSlug())}
+                  title="Generate random slug"
+                  className="p-3 rounded-xl bg-white/8 border border-white/15 text-gray-400 hover:text-white hover:bg-white/12 transition-all duration-200"
+                >
+                  <Shuffle className="w-4 h-4" />
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Error */}
+          {error && (
+            <p className="text-red-400 text-sm mb-4 flex items-center gap-2">
+              <span>⚠</span> {error}
+            </p>
+          )}
+
+          {/* Generate Button */}
+          <button
+            onClick={handleGenerate}
+            disabled={loading}
+            className="w-full py-3 rounded-xl font-semibold text-white text-sm transition-all duration-200
+                       bg-indigo-600 hover:bg-indigo-500 disabled:opacity-60 disabled:cursor-not-allowed
+                       hover:shadow-lg hover:shadow-indigo-500/25 flex items-center justify-center gap-2"
+          >
+            {loading ? (
+              <>
+                <LoaderCircle className="w-4 h-4 animate-spin" />
+                Generating...
+              </>
+            ) : (
+              "Generate Short URL"
+            )}
+          </button>
+        </div>
+
+        {/* How it works */}
+        <div className="mt-6 grid grid-cols-3 gap-3 text-center">
+          {[
+            { step: "1", text: "Paste your long URL" },
+            { step: "2", text: "Customize or auto-generate slug" },
+            { step: "3", text: "Copy & share your link" },
+          ].map((item) => (
+            <div key={item.step} className="bg-white/3 border border-white/8 rounded-xl p-3">
+              <div className="w-6 h-6 rounded-full bg-indigo-600/30 text-indigo-400 text-xs font-bold flex items-center justify-center mx-auto mb-2">
+                {item.step}
+              </div>
+              <p className="text-gray-500 text-xs">{item.text}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </main>
+  )
+}

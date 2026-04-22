@@ -1,99 +1,66 @@
-"use client";
-import React from "react";
-import Link from "next/link";
-import { SidebarClose, Home, Info, MessageCircle } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-import { useSidebarContext } from "./Context";
+"use client"
+import Link from "next/link"
+import { SidebarClose, Home, Info, MessageCircle, Link2, QrCode, BarChart2, Grid2X2 } from "lucide-react"
+import { useSidebarContext } from "./Context"
 
-const Sidebar = () => {
-  const { sidebarOpen, setSidebarOpen } = useSidebarContext();
+const links = [
+  { href: "/", label: "Home", icon: <Home className="w-5 h-5" /> },
+  { href: "/shortner", label: "Shortener", icon: <Link2 className="w-5 h-5" /> },
+  { href: "/ClickCounter", label: "Link Activity", icon: <BarChart2 className="w-5 h-5" /> },
+  { href: "/my-links", label: "My Links", icon: <Grid2X2 className="w-5 h-5" /> },
+  { href: "/qrCode-generator", label: "QR Generator", icon: <QrCode className="w-5 h-5" /> },
+  { href: "/my-QrCodes", label: "My QR Codes", icon: <Grid2X2 className="w-5 h-5" /> },
+  { href: "/about-urlixa", label: "About", icon: <Info className="w-5 h-5" /> },
+  { href: "/feedback", label: "Feedback", icon: <MessageCircle className="w-5 h-5" /> },
+]
+
+export default function Sidebar() {
+  const { sidebarOpen, setSidebarOpen } = useSidebarContext()
+
+  if (!sidebarOpen) return null
 
   return (
-    <AnimatePresence>
-      {sidebarOpen && (
-        <>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.5 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            className="fixed inset-0 bg-black z-40 backdrop-blur-sm"
-            onClick={() => setSidebarOpen(false)}
-          />
+    <>
+      {/* Backdrop */}
+      <div
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
+        onClick={() => setSidebarOpen(false)}
+      />
 
-          <motion.div
-            initial={{ x: "-100%", opacity: 0.5 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: "-100%", opacity: 0.5 }}
-            transition={{
-              duration: 0.35,
-              ease: [0.4, 0.0, 0.2, 1],
-            }}
-            className="fixed top-0 left-0 h-screen w-[75vw] sm:w-[45vw] md:w-[25vw]
-              bg-gradient-to-br from-indigo-900 via-purple-800 to-pink-700
-              backdrop-blur-xl border-r border-white/10 shadow-2xl z-50 flex flex-col"
-          >
-            <div className="absolute top-4 right-4 cursor-pointer">
-              <motion.div
-                whileHover={{ rotate: 90, scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                transition={{ duration: 0.3 }}
-              >
-                <SidebarClose
-                  onClick={() => setSidebarOpen(false)}
-                  className="w-8 h-8 text-white hover:text-red-400 transition-colors"
-                />
-              </motion.div>
-            </div>
+      {/* Drawer */}
+      <div className="fixed top-0 left-0 h-screen w-72 bg-[#0a0a1a] border-r border-white/10 z-50 flex flex-col shadow-2xl
+                      translate-x-0 transition-transform duration-300">
 
-            <div className="text-center mt-14 mb-6">
-              <h2 className="text-3xl font-extrabold text-white tracking-wide">
-                URLIX
-              </h2>
-              <p className="text-gray-300 text-sm mt-1">
-                Smart Short Links for Everyone 🚀
-              </p>
-            </div>
+        {/* Header */}
+        <div className="flex items-center justify-between px-5 py-5 border-b border-white/8">
+          <span className="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">
+            Urlixa
+          </span>
+          <button onClick={() => setSidebarOpen(false)} className="p-1.5 rounded-lg text-gray-500 hover:text-white hover:bg-white/8 transition-all">
+            <SidebarClose className="w-5 h-5" />
+          </button>
+        </div>
 
-            <ul className="flex flex-col relative px-5 gap-3 text-white font-semibold">
-              {[
-                { href: "/", label: "Home", icon: <Home className="w-6 h-6" /> },
-                { href: "/about-urlixa", label: "About Urlix", icon: <Info className="w-6 h-6" /> },
-                { href: "/feedback", label: "Feedback", icon: <MessageCircle className="w-6 h-6" /> },
-                { href: "/shortner", label: "Shortner", icon: <span className="text-xl">🔗</span> },
-              ].map((item, i) => (
-                <motion.li
-                  key={i}
-                  whileHover={{ x: 10 }}
-                  transition={{ duration: 0.2 }}
-                  className="list-none text-lg px-4 py-3 rounded-xl bg-white/10 
-                  hover:bg-white/20 hover:shadow-md hover:shadow-white/10 
-                  transition-all duration-300 cursor-pointer"
-                >
-                  <Link className="flex items-center gap-3" href={item.href}>
-                    <div className="w-8 h-8 rounded-full bg-black/30 flex items-center justify-center">
-                      {item.icon}
-                    </div>
-                    {item.label}
-                  </Link>
-                </motion.li>
-              ))}
-            </ul>
+        {/* Links */}
+        <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+          {links.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={() => setSidebarOpen(false)}
+              className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-white/8 transition-all duration-150 text-sm font-medium"
+            >
+              <span className="text-gray-600">{item.icon}</span>
+              {item.label}
+            </Link>
+          ))}
+        </nav>
 
-            <div className="mt-auto mb-8 text-center text-gray-400 text-sm">
-              <motion.p
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-              >
-                Made with ❤️ by <span className="text-purple-300">Urlix</span>
-              </motion.p>
-            </div>
-          </motion.div>
-        </>
-      )}
-    </AnimatePresence>
-  );
-};
-
-export default Sidebar;
+        {/* Footer */}
+        <div className="px-5 py-4 border-t border-white/8">
+          <p className="text-gray-600 text-xs">Made with ❤️ by Suhail</p>
+        </div>
+      </div>
+    </>
+  )
+}

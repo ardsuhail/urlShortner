@@ -1,85 +1,109 @@
 "use client"
-import React, { useRef, useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
+import { Copy, Check, ExternalLink, MousePointerClick, Plus, BarChart2 } from 'lucide-react'
 
-const Page = () => {
-//   const [shortUrl, setshortUrl] = useState("")
-//   const [url, setUrl] = useState("")
-    const [myLinks, setMyLinks] = useState([])
+export default function YourShortUrlPage() {
+  const [myLinks, setMyLinks] = useState([])
   const [copied, setCopied] = useState(false)
   const ref = useRef(null)
+  const domain = process.env.NEXT_PUBLIC_URL
 
   useEffect(() => {
-      const storedLinks = JSON.parse(localStorage.getItem("links")) || [];
-     if(storedLinks)setMyLinks(storedLinks);
+    const storedLinks = JSON.parse(localStorage.getItem("links")) || []
+    setMyLinks(storedLinks)
   }, [])
 
+  const latestLink = myLinks[myLinks.length - 1]
+  const shortUrl = latestLink ? `${domain}/${latestLink.shortUrl}` : ""
+
   const handleCopy = () => {
-    if (ref.current) {
-      navigator.clipboard.writeText(ref.current.value)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    }
+    if (!shortUrl) return
+    navigator.clipboard.writeText(shortUrl)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
   }
-  const domain=process.env.NEXT_PUBLIC_URL
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-indigo-900 to-black px-4">
-     
-      <div className="text-center mb-10">
-        <h1 className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-pink-500 drop-shadow-lg">
-          Your Shortened URL
-        </h1>
-        <p className="text-gray-300 mt-2 max-w-xl text-sm md:text-base">
-          Copy the short link and share it anywhere — messages, posts, or your website.
-        </p>
-      </div>
+    <main className="min-h-screen flex flex-col items-center justify-center bg-[#080812] px-4 py-12">
 
-      <div className="w-full max-w-2xl bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl shadow-2xl p-8 flex flex-col items-center space-y-6 transition-all hover:shadow-purple-700/30 hover:scale-[1.01]">
-        <label htmlFor="short" className="flex w-full justify-center items-center">
-          <input
-            ref={ref}
-            type="text"
-            id="short"
-            readOnly
-            className="bg-white/90 p-3 w-[60%] md:w-[70%] text-black rounded-l-lg outline-none font-medium"
-            value={`${domain}/${myLinks.length > 0 ? myLinks[myLinks.length - 1].shortUrl : ''}`}
-          />
-          <button
-            onClick={handleCopy}
-            className={`${
-              copied ? 'bg-green-500' : 'bg-blue-600'
-            } text-white  cursor-pointer  px-4 py-3 rounded-r-lg font-semibold hover:opacity-90 transition-all active:scale-95`}
-          >
-            {copied ? 'Copied!' : 'Copy'}
-          </button>
-        </label>
+      {/* Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#0d0d2b] via-[#0f0a20] to-[#080812] -z-10" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[250px] bg-green-600/8 rounded-full blur-3xl -z-10" />
 
-        <p className="text-gray-200 text-center text-sm md:text-base">
-          Original URL:{' '}
-          <Link
-            href={`/${myLinks.length > 0 ? myLinks[myLinks.length - 1].url : ''}`}
-            className="text-blue-400 hover:text-blue-500 underline transition-all"
-          >
-            {myLinks.length > 0 ? myLinks[myLinks.length - 1].url : 'No URL found'}
-          </Link>
-        </p>
+      <div className="w-full max-w-lg">
 
-        <div className="flex flex-col sm:flex-row gap-4 w-full justify-center mt-4">
+        {/* Success icon */}
+        <div className="flex justify-center mb-6">
+          <div className="w-14 h-14 rounded-2xl bg-green-500/15 border border-green-500/25 flex items-center justify-center">
+            <Check className="w-7 h-7 text-green-400" />
+          </div>
+        </div>
+
+        <h1 className="text-3xl font-black text-white text-center mb-2">Link Created!</h1>
+        <p className="text-gray-400 text-center text-sm mb-8">Your short URL is ready to share</p>
+
+        {/* Short URL Card */}
+        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-4 backdrop-blur-sm">
+
+          <label className="block text-xs text-gray-500 mb-2 uppercase tracking-wider">Your Short URL</label>
+
+          {/* URL Copy Row */}
+          <div className="flex items-center gap-2 mb-4">
+            <div className="flex-1 px-4 py-3 rounded-xl bg-white/8 border border-indigo-500/30 text-indigo-300 font-mono text-sm truncate">
+              {shortUrl || "Loading..."}
+            </div>
+            <button
+              onClick={handleCopy}
+              className={`p-3 rounded-xl border transition-all duration-200 flex items-center gap-2
+                ${copied
+                  ? "bg-green-500/15 border-green-500/30 text-green-400"
+                  : "bg-white/8 border-white/15 text-gray-400 hover:text-white hover:bg-white/12"
+                }`}
+            >
+              {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+            </button>
+          </div>
+
+          {/* Original URL */}
+          {latestLink && (
+            <div className="flex items-start gap-2 text-sm">
+              <span className="text-gray-600 whitespace-nowrap mt-0.5">Original:</span>
+              <a
+                href={latestLink.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-gray-200 transition-colors truncate flex items-center gap-1"
+              >
+                {latestLink.url}
+                <ExternalLink className="w-3 h-3 flex-shrink-0" />
+              </a>
+            </div>
+          )}
+        </div>
+
+        {/* Action Buttons */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <Link href="/ClickCounter">
-            <button className="  cursor-pointer bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl py-2 px-6 font-semibold shadow-lg hover:shadow-indigo-600/40 hover:scale-105 transition-all">
-              Total Clicks Of Your URL
+            <button className="w-full py-3 rounded-xl bg-white/5 border border-white/10 text-gray-300 hover:bg-white/8 hover:text-white transition-all duration-200 text-sm font-medium flex items-center justify-center gap-2">
+              <BarChart2 className="w-4 h-4" />
+              Click Stats
             </button>
           </Link>
           <Link href="/shortner">
-            <button className="  cursor-pointer bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl py-2 px-6 font-semibold shadow-lg hover:shadow-emerald-600/40 hover:scale-105 transition-all">
-              Short Another URL
+            <button className="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white transition-all duration-200 text-sm font-medium flex items-center justify-center gap-2">
+              <Plus className="w-4 h-4" />
+              Shorten More
+            </button>
+          </Link>
+          <Link href="/my-links">
+            <button className="w-full py-3 rounded-xl bg-white/5 border border-white/10 text-gray-300 hover:bg-white/8 hover:text-white transition-all duration-200 text-sm font-medium flex items-center justify-center gap-2">
+              <MousePointerClick className="w-4 h-4" />
+              My Links
             </button>
           </Link>
         </div>
       </div>
-    </div>
+    </main>
   )
 }
-
-export default Page

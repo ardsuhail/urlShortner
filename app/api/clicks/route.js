@@ -1,4 +1,3 @@
-import { redirect } from "next/navigation"
 import urls from "@/model/urls"
 import connectDB from "@/db/connectDB"
 

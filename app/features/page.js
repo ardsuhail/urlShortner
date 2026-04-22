@@ -1,89 +1,141 @@
-"use client";
-import React from "react";
-import { Link as LinkIcon, QrCode, Download, Database } from "lucide-react";
+"use client"
+import Link from "next/link"
+import { Link2, QrCode, Download, BarChart2, Shuffle, Smartphone, Zap, Shield } from "lucide-react"
 
-export default function ServicesPage() {
-  const services = [
-    {
-      title: "URL Shortening",
-      desc: "Instantly create short links stored in our database. Clean, fast, and ready to share.",
-      icon: LinkIcon,
-    },
-    {
-      title: "QR Code Generation",
-      desc: "Generate high-resolution QR codes for your short URLs. Currently stored locally for simplicity.",
-      icon: QrCode,
-    },
-    {
-      title: "Download QR Codes",
-      desc: "Download your generated QR codes immediately for use anywhere.",
-      icon: Download,
-    },
-    {
-      title: "Dashboard UI Preview",
-      desc: "Organized view of your short URLs and locally stored QR codes. Currently shows UI placeholder.",
-      icon: Database,
-    },
-  ];
+const currentFeatures = [
+  {
+    icon: <Link2 className="w-6 h-6" />,
+    title: "URL Shortening",
+    desc: "Shorten any long URL into a clean, shareable link stored in our database. Custom slugs supported.",
+  },
+  {
+    icon: <Shuffle className="w-6 h-6" />,
+    title: "Random Slug Generator",
+    desc: "Auto-generate a unique short slug in one click — no need to think of one yourself.",
+  },
+  {
+    icon: <QrCode className="w-6 h-6" />,
+    title: "QR Code Generator",
+    desc: "Turn any URL into a high-quality scannable QR code. Download as PNG instantly.",
+  },
+  {
+    icon: <BarChart2 className="w-6 h-6" />,
+    title: "Click Analytics",
+    desc: "Check exactly how many times your short URL has been clicked, in real time.",
+  },
+  {
+    icon: <Download className="w-6 h-6" />,
+    title: "Download QR Codes",
+    desc: "Save your QR codes locally as PNG files with proper padding — print-ready quality.",
+  },
+  {
+    icon: <Smartphone className="w-6 h-6" />,
+    title: "Fully Responsive",
+    desc: "Works seamlessly on mobile, tablet, and desktop. Optimized for all screen sizes.",
+  },
+  {
+    icon: <Zap className="w-6 h-6" />,
+    title: "No Signup Required",
+    desc: "Start shortening and generating QR codes immediately — no account or signup needed.",
+  },
+  {
+    icon: <Shield className="w-6 h-6" />,
+    title: "Secure & Fast",
+    desc: "All links served over HTTPS with fast redirects. Your data is never sold.",
+  },
+]
 
-  const futurePlans = [
-    "Authentication (Gmail/OAuth) for cross-device access",
-    "Advanced analytics: device, city, state, country-level click counts",
-    "Custom domains & vanity links",
-    "Team accounts & shared link libraries",
-    "API access for developers",
-    "Automated export/reports",
-    "Integration with tools like Slack, Google Sheets, Zapier"
-  ];
+const upcomingFeatures = [
+  "User authentication (Google / GitHub OAuth)",
+  "Cloud-synced link history across devices",
+  "Advanced analytics: device, city, country-level click stats",
+  "Custom domains & vanity links",
+  "Team accounts with shared link libraries",
+  "API access for developers",
+  "Bulk URL shortening",
+  "Auto-expiring links with custom TTL",
+  "Integration with Slack, Zapier, Google Sheets",
+  "Automated export & CSV reports",
+]
 
+export default function FeaturesPage() {
   return (
-    <main className="max-w-7xl mx-auto py-20 px-6 bg-gradient-to-b from-white via-gray-50 to-white">
-      {/* Hero Section */}
-      <header className="text-center mb-16">
-        <h1 className="text-5xl font-extrabold leading-tight">Powerful Link & QR Tools</h1>
-        <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-          Shorten links, generate QR codes, and manage everything neatly in one place. Simple, free, and professional.
-        </p>
-      </header>
+    <main className="min-h-screen bg-[#080812] px-4 py-12">
+      <div className="absolute inset-0 bg-gradient-to-br from-[#0d0d2b] via-[#0f0a20] to-[#080812] -z-10" />
 
-      {/* Features Section */}
-      <section className="grid md:grid-cols-2 gap-12">
-        {services.map((s) => (
-          <div key={s.title} className="flex gap-6 items-start bg-white p-8 rounded-3xl shadow-lg hover:shadow-2xl transition">
-            <div className="flex-none w-16 h-16 rounded-xl bg-gray-100 grid place-items-center">
-              <s.icon className="w-8 h-8 text-gray-700" />
-            </div>
-            <div>
-              <h3 className="text-2xl font-semibold mb-2">{s.title}</h3>
-              <p className="text-gray-600">{s.desc}</p>
-            </div>
-          </div>
-        ))}
-      </section>
+      <div className="max-w-5xl mx-auto">
 
-      {/* Future Plans Section */}
-      <section className="mt-20">
-        <h2 className="text-3xl font-bold mb-6 text-center">What’s Coming Next</h2>
-        <p className="text-center text-gray-600 max-w-2xl mx-auto mb-8">
-          We have exciting plans to enhance your experience. Here’s what we are planning to add in the future:
-        </p>
-        <ul className="max-w-3xl mx-auto grid md:grid-cols-2 gap-6 list-disc list-inside text-gray-700">
-          {futurePlans.map((plan) => (
-            <li key={plan} className="text-lg">{plan}</li>
-          ))}
-        </ul>
-      </section>
-
-      {/* Dashboard UI Preview Section */}
-      <section className="mt-20">
-        <h2 className="text-3xl font-bold mb-6 text-center">Dashboard Preview</h2>
-        <p className="text-center text-gray-600 max-w-2xl mx-auto mb-8">
-          View your short URLs and locally-stored QR codes neatly organized. Currently shows UI placeholder.
-        </p>
-        <div className="w-full border border-dashed border-gray-200 rounded-2xl p-8">
-          <p className="text-gray-500 text-center">Dashboard table placeholder — short URLs from DB, QR codes from localStorage.</p>
+        {/* Header */}
+        <div className="text-center mb-14">
+          <h1 className="text-4xl sm:text-5xl font-black text-white mb-4 leading-tight">
+            Everything you need to{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">
+              share smarter
+            </span>
+          </h1>
+          <p className="text-gray-400 max-w-xl mx-auto text-sm sm:text-base">
+            Urlixa gives you powerful link management tools — for free. Here is what is available today and what is coming next.
+          </p>
         </div>
-      </section>
+
+        {/* Current Features */}
+        <section className="mb-16">
+          <div className="flex items-center gap-3 mb-6">
+            <span className="w-2 h-2 rounded-full bg-green-400" />
+            <h2 className="text-white font-bold text-lg">Available Now</h2>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {currentFeatures.map((f) => (
+              <div
+                key={f.title}
+                className="bg-white/5 border border-white/10 rounded-2xl p-5 hover:bg-white/8 transition-all duration-200 group"
+              >
+                <div className="w-10 h-10 rounded-xl bg-indigo-500/15 border border-indigo-500/20 flex items-center justify-center text-indigo-400 mb-4 group-hover:bg-indigo-500/20 transition-all">
+                  {f.icon}
+                </div>
+                <h3 className="text-white font-semibold mb-1.5 text-sm">{f.title}</h3>
+                <p className="text-gray-500 text-xs leading-relaxed">{f.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Upcoming Features */}
+        <section className="mb-14">
+          <div className="flex items-center gap-3 mb-6">
+            <span className="w-2 h-2 rounded-full bg-yellow-400 animate-pulse" />
+            <h2 className="text-white font-bold text-lg">Coming Soon</h2>
+          </div>
+          <div className="bg-white/3 border border-white/8 rounded-2xl p-6 grid sm:grid-cols-2 gap-3">
+            {upcomingFeatures.map((item) => (
+              <div key={item} className="flex items-start gap-3">
+                <span className="w-1.5 h-1.5 rounded-full bg-indigo-400/60 mt-1.5 flex-shrink-0" />
+                <p className="text-gray-400 text-sm">{item}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* CTA */}
+        <div className="text-center bg-white/5 border border-white/10 rounded-2xl p-8">
+          <h2 className="text-2xl font-black text-white mb-2">Ready to get started?</h2>
+          <p className="text-gray-400 text-sm mb-6">No signup needed. Start shortening in seconds.</p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Link
+              href="/shortner"
+              className="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl transition-all duration-200 text-sm hover:shadow-lg hover:shadow-indigo-500/25"
+            >
+              Shorten a URL →
+            </Link>
+            <Link
+              href="/qrCode-generator"
+              className="px-6 py-3 bg-white/8 border border-white/15 hover:bg-white/12 text-white font-semibold rounded-xl transition-all duration-200 text-sm"
+            >
+              Generate QR Code
+            </Link>
+          </div>
+        </div>
+      </div>
     </main>
-  );
+  )
 }

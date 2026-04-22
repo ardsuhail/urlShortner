@@ -1,173 +1,177 @@
-"use client";
-import React, { useState, useEffect, useRef } from "react";
-import { QRCodeCanvas } from "qrcode.react";
-import { motion } from "framer-motion";
-import { Download, BarChart3, Pencil } from "lucide-react";
+"use client"
+import { useState, useEffect } from "react"
+import { QRCodeCanvas } from "qrcode.react"
+import { Download, Pencil, Check, X, Trash2, QrCode } from "lucide-react"
+import Link from "next/link"
 
+export default function MyQRCodesPage() {
+  const [qrCodes, setQrCodes] = useState([])
+  const [titles, setTitles] = useState([])
+  const [editingIndex, setEditingIndex] = useState(null)
+  const [editValue, setEditValue] = useState("")
 
-const Page = () => {
-  const [qrCodes, setQrCodes] = useState([]);
-  const qrRef = useRef(null);
-  const [qrTitle, setQrTitle] = useState([])
-  const [isEditing, setIsEditing] = useState(null);
- 
-  
   useEffect(() => {
-    const storedQrCode = JSON.parse(localStorage.getItem("qrCode")) || [];
-    setQrCodes(storedQrCode);
-    setQrTitle(storedQrCode.map((_, index) => `My QR Code ${index + 1}`));
-    const storedTitles = JSON.parse(localStorage.getItem("qrTitles"));
-    if (storedTitles && storedTitles.length === storedQrCode.length) {
-      setQrTitle(storedTitles);
-    } else {
-      // Default titles if none saved
-      setQrTitle(storedQrCode.map((_, i) => `My QR Code ${i + 1}`));
-    }
+    const stored = JSON.parse(localStorage.getItem("qrCode")) || []
+    const storedTitles = JSON.parse(localStorage.getItem("qrTitles")) || []
+    setQrCodes(stored)
+    setTitles(stored.map((_, i) => storedTitles[i] || `QR Code ${i + 1}`))
+  }, [])
 
-  }, []);
-    useEffect(() => {
-    if (qrTitle.length > 0) {
-      localStorage.setItem("qrTitles", JSON.stringify(qrTitle));
-    }
-  }, [qrTitle]);
-  const handleChange = (index, newValue) => {
-    const updatedTitles = [...qrTitle];
-    updatedTitles[index] = newValue;
-    setQrTitle(updatedTitles);
-  };
-  const handleEdit = (index) => {
-    setIsEditing(index);
-  };
+  const saveTitles = (updated) => {
+    setTitles(updated)
+    localStorage.setItem("qrTitles", JSON.stringify(updated))
+  }
 
-  const handleSave = () => {
-    setIsEditing(null);
-  };
+  const handleEditStart = (index) => {
+    setEditingIndex(index)
+    setEditValue(titles[index])
+  }
 
+  const handleEditSave = (index) => {
+    const updated = [...titles]
+    updated[index] = editValue.trim() || `QR Code ${index + 1}`
+    saveTitles(updated)
+    setEditingIndex(null)
+  }
+
+  const handleDelete = (index) => {
+    const updatedCodes = qrCodes.filter((_, i) => i !== index)
+    const updatedTitles = titles.filter((_, i) => i !== index)
+    localStorage.setItem("qrCode", JSON.stringify(updatedCodes))
+    saveTitles(updatedTitles)
+    setQrCodes(updatedCodes)
+  }
 
   const handleDownload = (index) => {
-    const canvas = document.getElementById(`qr-${index}`);
-    // Create a new canvas with extra padding
-    const padding = 20; // ✅ Add white border around QR
-    const size = canvas.width + padding * 2;
-    const paddedCanvas = document.createElement("canvas");
-    paddedCanvas.width = size;
-    paddedCanvas.height = size;
+    const canvas = document.getElementById(`qr-canvas-${index}`)
+    if (!canvas) return
 
-    const ctx = paddedCanvas.getContext("2d");
-    ctx.fillStyle = "#fff";
-    ctx.fillRect(0, 0, size, size);
+    const padding = 24
+    const size = canvas.width + padding * 2
+    const paddedCanvas = document.createElement("canvas")
+    paddedCanvas.width = size
+    paddedCanvas.height = size
+    const ctx = paddedCanvas.getContext("2d")
+    ctx.fillStyle = "#ffffff"
+    ctx.fillRect(0, 0, size, size)
+    ctx.drawImage(canvas, padding, padding)
 
-    // Draw QR in center with padding
-    ctx.drawImage(canvas, padding, padding);
-    const url = paddedCanvas.toDataURL("image/png");
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `${qrTitle[index] || `MyQRCode-${index + 1}`}.png`;
-    link.click();
-
-
-
-
-  };
+    const link = document.createElement("a")
+    link.href = paddedCanvas.toDataURL("image/png")
+    link.download = `${titles[index] || "qrcode"}.png`
+    link.click()
+  }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-slate-900 p-6 sm:p-12 flex flex-col items-center">
-      <motion.h1
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="text-3xl sm:text-4xl font-extrabold text-white mb-8 tracking-tight"
-      >
-        My Generated QR Codes
-      </motion.h1>
+    <main className="min-h-screen bg-[#080812] px-4 py-12">
+      <div className="absolute inset-0 bg-gradient-to-br from-[#0d0d2b] via-[#0f0a20] to-[#080812] -z-10" />
 
-      {qrCodes.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-6xl">
-          {qrCodes.map((item, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1, duration: 0.5 }}
-              className="bg-white rounded-2xl shadow-xl p-4 flex flex-col gap-3 relative"
-            >
-              
-              <div className="flex items-center  gap-3">
-                <QRCodeCanvas
-                  id={`qr-${index}`}
-                  value={item.qrcode}
-                  size={60}
-                  className="rounded-md border border-gray-200"
-                />
-                <div>
-                  <p className="font-semibold text-gray-800">PNG</p>
-                  <div className="flex gap-3 items-center" >
-                    <input
-                      type="text"
-                      className={`text-black w-30 text-sm border ${isEditing === index
-                          ? "border-gray-800 px-2 rounded"
-                          : "border-transparent"
-                        }`}
-                      value={qrTitle[index]}
-                      onChange={(e) => handleChange(index, e.target.value)}
+      <div className="max-w-5xl mx-auto">
 
-                      readOnly={isEditing !== index}
-                    />
-                    <Pencil
-                      onClick={() => handleEdit(index)}
-                      className="w-4 h-4 text-gray-400 hover:text-gray-600 cursor-pointer"
-                    />
-                    <button onClick={handleSave} className="bg-blue-700 flex  transition-all transform duration-75 hover:scale-x-105 px-2 pb-1 text-sm text-white font-semibold cursor-pointer" >save</button>
-                  </div>
+        {/* Header */}
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h1 className="text-3xl font-black text-white">My QR Codes</h1>
+            <p className="text-gray-500 text-sm mt-1">{qrCodes.length} QR code{qrCodes.length !== 1 ? "s" : ""} generated</p>
+          </div>
+          <Link href="/qrCode-generator">
+            <button className="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white text-sm font-medium rounded-xl transition-all duration-200">
+              + New QR
+            </button>
+          </Link>
+        </div>
+
+        {/* Empty State */}
+        {qrCodes.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-24 text-center">
+            <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-4">
+              <QrCode className="w-7 h-7 text-gray-600" />
+            </div>
+            <p className="text-gray-400 font-medium mb-1">No QR codes yet</p>
+            <p className="text-gray-600 text-sm mb-6">Generate your first QR code to see it here</p>
+            <Link href="/qrCode-generator">
+              <button className="px-5 py-2.5 bg-purple-600 hover:bg-purple-500 text-white text-sm font-medium rounded-xl transition-all">
+                Generate QR Code
+              </button>
+            </Link>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {qrCodes.map((item, index) => (
+              <div key={index} className="bg-white/5 border border-white/10 rounded-2xl p-5 flex flex-col gap-4 hover:bg-white/8 transition-all duration-200 group">
+
+                {/* QR Code */}
+                <div className="flex items-center justify-center bg-white rounded-xl p-4">
+                  <QRCodeCanvas
+                    id={`qr-canvas-${index}`}
+                    value={item.qrcode}
+                    size={140}
+                    bgColor="#ffffff"
+                    fgColor="#0d0d2b"
+                    level="H"
+                  />
                 </div>
-                {/* <div className="ml-auto text-center">
-                  <p className="text-lg font-bold text-indigo-600">0</p>
-                  <p className="text-xs text-gray-500">Scans</p>
-                </div> */}
-              </div>
 
-       
-              <div className="text-sm text-gray-500 mt-2">
-                {/* <p className="text-gray-400">No folder</p> */}
+                {/* Title Edit */}
+                <div className="flex items-center gap-2">
+                  {editingIndex === index ? (
+                    <>
+                      <input
+                        type="text"
+                        value={editValue}
+                        onChange={(e) => setEditValue(e.target.value)}
+                        onKeyDown={(e) => e.key === "Enter" && handleEditSave(index)}
+                        autoFocus
+                        className="flex-1 px-3 py-1.5 rounded-lg bg-white/10 border border-white/20 text-white text-sm outline-none focus:border-purple-500 transition-colors"
+                      />
+                      <button onClick={() => handleEditSave(index)} className="p-1.5 rounded-lg text-green-400 hover:bg-green-500/10 transition-all">
+                        <Check className="w-4 h-4" />
+                      </button>
+                      <button onClick={() => setEditingIndex(null)} className="p-1.5 rounded-lg text-gray-500 hover:bg-white/10 transition-all">
+                        <X className="w-4 h-4" />
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <span className="flex-1 text-white text-sm font-medium truncate">{titles[index]}</span>
+                      <button onClick={() => handleEditStart(index)} className="p-1.5 rounded-lg text-gray-600 hover:text-gray-300 hover:bg-white/8 transition-all opacity-0 group-hover:opacity-100">
+                        <Pencil className="w-3.5 h-3.5" />
+                      </button>
+                    </>
+                  )}
+                </div>
+
+                {/* URL */}
                 <a
                   href={item.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-blue-500 hover:underline truncate block"
+                  className="text-gray-500 text-xs truncate hover:text-gray-300 transition-colors"
                 >
                   {item.url}
                 </a>
-                {/* <p className="text-xs text-gray-400 mt-1">
-                  Modified: {new Date().toLocaleDateString()}
-                </p> */}
+
+                {/* Actions */}
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => handleDownload(index)}
+                    className="flex-1 py-2 rounded-lg bg-purple-600/80 hover:bg-purple-600 text-white text-xs font-medium flex items-center justify-center gap-1.5 transition-all"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    Download
+                  </button>
+                  <button
+                    onClick={() => handleDelete(index)}
+                    className="p-2 rounded-lg bg-white/5 text-gray-500 hover:text-red-400 hover:bg-red-500/10 transition-all"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
-
-            
-              <button
-                onClick={() => handleDownload(index)}
-                className="mt-3 w-full flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-xl transition"
-              >
-                <Download className="w-4 h-4" /> Download
-              </button>
-
-             
-              {/* <div className="absolute top-3 right-3 flex gap-2">
-                <BarChart3 className="w-4 h-4 text-gray-400 hover:text-gray-600 cursor-pointer" />
-              </div> */}
-            </motion.div>
-          ))}
-        </div>
-      ) : (
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="text-gray-300 text-lg mt-12"
-        >
-          You haven’t generated any QR code yet 😅
-        </motion.p>
-      )}
+            ))}
+          </div>
+        )}
+      </div>
     </main>
-  );
-};
-
-export default Page;
+  )
+}
